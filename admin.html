@@ -1,0 +1,492 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Ad | Omnivo Global</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --om-orange: #ff5722;
+            --om-black: #000000;
+            --om-white: #ffffff;
+            --om-grey: #f4f4f4;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: var(--om-white); 
+            margin: 0; 
+            padding: 0; 
+            color: var(--om-black);
+        }
+
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+        .thick-line { height: 5px; background: var(--om-orange); width: 100%; margin-bottom: 20px; }
+
+        /* Step Logic */
+        .step { display: none; } 
+        .step.active { display: block; animation: fadeIn 0.3s; } 
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { font-size: 24px; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; }
+
+        label { 
+            display: block; 
+            font-size: 11px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 2px solid var(--om-black);
+            font-size: 16px;
+            outline: none;
+            background: transparent;
+            margin-bottom: 10px;
+        }
+
+        input:focus { border-bottom-color: var(--om-orange); }
+        textarea { height: 80px; resize: none; }
+
+        .location-item { 
+            padding: 15px; 
+            border-bottom: 1px solid #eee; 
+            cursor: pointer; 
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .location-item:hover { color: var(--om-orange); background: #fffcfb; }
+
+        .btn-post {
+            width: 100%;
+            padding: 20px;
+            background: var(--om-black);
+            color: var(--om-white);
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 20px;
+        }
+
+        .btn-post:hover { background: var(--om-orange); }
+
+        #preview-img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            margin-top: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="thick-line"></div>
+
+    <div id="step1" class="step active">
+        <h2>Choose Region</h2>
+        <div class="location-item" onclick="pickCountry('usa')">United States <span>&gt;</span></div>
+        <div class="location-item" onclick="pickCountry('canada')">Canada <span>&gt;</span></div>
+        <div class="location-item" onclick="pickCountry('europe')">Europe <span>&gt;</span></div>
+        <div class="location-item" onclick="pickCountry('asia')">Asia / Middle East <span>&gt;</span></div>
+        <div class="location-item" onclick="pickCountry('latinamerica')">Latin America <span>&gt;</span></div>
+    </div>
+
+    <div id="step2" class="step">
+        <h2>Choose City</h2>
+        <div id="city-list"></div>
+    </div>
+
+    <div id="step3" class="step">
+        <h2 id="display-location">Post Ad</h2>
+        
+        <form id="mainAdForm">
+            <label>Provider Name</label>
+            <input type="text" id="ad-name" placeholder="Your Name or Alias" required>
+
+            <label>Ad Title</label>
+            <input type="text" id="ad-title" placeholder="Attractive title..." required>
+
+            <label>Description</label>
+            <textarea id="ad-content" placeholder="Tell us about your service..." required></textarea>
+
+            <div style="display: flex; gap: 15px;">
+                <div style="flex: 1;">
+                    <label>Age</label>
+                    <input type="number" id="ad-age" placeholder="21" required>
+                </div>
+                <div style="flex: 1;">
+                    <label>Price</label>
+                    <input type="text" id="ad-price" placeholder="$150" required>
+                </div>
+            </div>
+
+            <label>Phone Number</label>
+            <input type="tel" id="ad-phone" placeholder="+1..." required>
+
+            <label><i class="fa-brands fa-whatsapp"></i> WhatsApp (Optional)</label>
+            <input type="text" id="ad-whatsapp" placeholder="Number only">
+
+            <label><i class="fa-brands fa-telegram"></i> Telegram (Optional)</label>
+            <input type="text" id="ad-telegram" placeholder="Username">
+
+            <label><i class="fa-brands fa-snapchat"></i> Snapchat (Optional)</label>
+            <input type="text" id="ad-snapchat" placeholder="Username">
+
+            <label>Upload Photo</label>
+            <input type="file" id="ad-image-input" accept="image/*" required>
+            <img id="preview-img" src="">
+
+            <button type="submit" id="submit-btn" class="btn-post">Post Ad Globally</button>
+        </form>
+    </div>
+</div>
+
+<script src="location.js"></script>
+<script>
+    let selectedCity = "";
+    let base64Image = "";
+
+    function goToStep(stepNum) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + stepNum).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function pickCountry(code) {
+        const list = document.getElementById('city-list');
+        list.innerHTML = "";
+        const countryData = locations[code];
+
+        for (let region in countryData) {
+            countryData[region].forEach(city => {
+                const div = document.createElement('div');
+                div.className = "location-item";
+                div.innerText = city;
+                div.onclick = () => {
+                    selectedCity = city;
+                    document.getElementById('display-location').innerText = "Post in " + city;
+                    goToStep(3);
+                };
+                list.appendChild(div);
+            });
+        }
+        goToStep(2);
+    }
+
+    // Image Preview & Conversion
+    document.getElementById('ad-image-input').onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                base64Image = reader.result;
+                const img = document.getElementById('preview-img');
+                img.src = base64Image;
+                img.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // --- SUBMIT TO MONGODB ---
+    document.getElementById('mainAdForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.innerText = "UPLOADING...";
+        btn.disabled = true;
+
+        const adData = {
+            name: document.getElementById('ad-name').value,
+            title: document.getElementById('ad-title').value,
+            content: document.getElementById('ad-content').value,
+            age: document.getElementById('ad-age').value,
+            price: document.getElementById('ad-price').value,
+            phone: document.getElementById('ad-phone').value,
+            whatsapp: document.getElementById('ad-whatsapp').value,
+            telegram: document.getElementById('ad-telegram').value,
+            snapchat: document.getElementById('ad-snapchat').value,
+            city: selectedCity.toLowerCase().trim(),
+            image: base64Image
+        };
+
+        try {
+            const response = await fetch('http://127.0.0.1:3000/api/ads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(adData)
+            });
+
+            if (response.ok) {
+                alert("Success! Your ad is live.");
+                window.location.href = "index.html";
+            } else {
+                alert("Server error. Try again.");
+                btn.disabled = false;
+                btn.innerText = "Post Ad Globally";
+            }
+        } catch (err) {
+            alert("Connection error. Is your server running?");
+            btn.disabled = false;
+            btn.innerText = "Post Ad Globally";
+        }
+    };
+</script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Admin | Omnivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root { --om-orange: #ff5722; --om-black: #000000; --om-white: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fff; margin: 0; color: var(--om-black); }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .thick-line { height: 6px; background: var(--om-orange); width: 100%; margin-bottom: 20px; }
+        
+        /* Steps Logic */
+        .step { display: none; } 
+        .step.active { display: block; } 
+
+        h2 { text-transform: uppercase; font-weight: 900; letter-spacing: -1px; }
+        label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 15px; }
+        
+        input, select, textarea {
+            width: 100%; padding: 12px 0; border: none; border-bottom: 2px solid #000;
+            font-size: 16px; outline: none; background: transparent; margin-bottom: 10px;
+        }
+        input:focus { border-bottom-color: var(--om-orange); }
+
+        .location-item { 
+            padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; 
+            font-weight: 600; display: flex; justify-content: space-between; 
+        }
+        .location-item:hover { color: var(--om-orange); background: #fffcfb; }
+        .btn-post {
+            width: 100%; padding: 20px; background: var(--om-black); color: #fff;
+            border: none; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px;
+        }
+        .btn-post:hover { background: var(--om-orange); }
+
+        /* Management Styles */
+        .admin-section { margin-top: 50px; border-top: 5px solid #000; padding-top: 20px; }
+        .manage-card { 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px; border: 1px solid #ddd; margin-bottom: 5px; border-radius: 4px;
+        }
+        .delete-btn { background: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="thick-line"></div>
+
+    <div id="step1" class="step active">
+        <h2>1. Select Region</h2>
+        <div class="location-item" onclick="pickCountry('usa')">United States <span>&gt;</span></div>
+        <div class="location-item" onclick="pickCountry('canada')">Canada <span>&gt;</span></div>
+        <div class="location-item" onclick="pickCountry('uk')">United Kingdom <span>&gt;</span></div>
+    </div>
+
+    <div id="step2" class="step">
+        <h2>2. Select Target</h2>
+        <div id="city-list"></div>
+    </div>
+
+    <div id="step3" class="step">
+        <h2 id="display-location">Post Ad</h2>
+        <form id="mainAdForm">
+            <label>Category</label>
+            <select id="ad-category" required>
+                <option value="regular-massage">Regular Massage</option>
+                <option value="bodyrubs">Bodyrubs</option>
+                <option value="strippers-strip-clubs">Strippers & Strip Clubs</option>
+            </select>
+
+            <label>Ad Title</label>
+            <input type="text" id="ad-title" placeholder="Attractive title..." required>
+
+            <label>Description</label>
+            <textarea id="ad-content" placeholder="Ad content..." required></textarea>
+
+                <label>Contact Phone</label>
+            <input type="tel" id="ad-phone" placeholder="Phone Number" required>
+
+            <label>Upload Photos</label>
+            <input type="file" id="ad-images" accept="image/*" multiple>
+            <div id="preview-container" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
+
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="ad-age" placeholder="Age" required>
+                <input type="text" id="ad-price" placeholder="Price (e.g. $150)" required>
+            </div>
+                <label><i class="fa-brands fa-whatsapp"></i> WhatsApp</label>
+            <input type="text" id="whatsapp" placeholder="e.g. 15551234567">
+
+            <label><i class="fa-brands fa-telegram"></i> Telegram</label>
+            <input type="text" id="telegram" placeholder="Username">
+
+            <label><i class="fa-brands fa-snapchat"></i> Snapchat</label>
+            <input type="text" id="snapchat" placeholder="Username">
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn-post">Blast Ad Live</button>
+        </form>
+    </div>
+
+    <div class="admin-section">
+        <h2>Manage Live Ads</h2>
+        <button onclick="fetchManageAds()" style="margin-bottom: 10px;">Refresh Ads List</button>
+        <div id="admin-ads-list"></div>
+    </div>
+</div>
+
+<script src="location.js"></script>
+<script>
+    let selectedCity = "";
+    let selectedCountryCode = "";
+    let imageArray = [];
+
+    function goToStep(s) {
+        document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
+        document.getElementById('step' + s).classList.add('active');
+    }
+
+    function pickCountry(code) {
+        selectedCountryCode = code;
+        const list = document.getElementById('city-list');
+        list.innerHTML = `
+            <div class="location-item" style="background:#fff3f0; color:var(--om-orange);" onclick="setGlobal()">
+                <b>🚀 POST TO ALL CITIES IN ${code.toUpperCase()}</b>
+            </div>
+        `;
+        
+        const data = locations[code];
+        for (let state in data) {
+            data[state].forEach(city => {
+                const d = document.createElement('div');
+                d.className = "location-item";
+                d.innerText = city;
+                d.onclick = () => { selectedCity = city; goToStep(3); document.getElementById('display-location').innerText = "Post in " + city; };
+                list.appendChild(d);
+            });
+        }
+        goToStep(2);
+    }
+
+    function setGlobal() {
+        selectedCity = "GLOBAL_BLAST";
+        document.getElementById('display-location').innerText = "Global Blast: " + selectedCountryCode.toUpperCase();
+        goToStep(3);
+    }
+
+    // IMAGE LOGIC (2 Pics, 500KB Limit)
+    document.getElementById('ad-images').onchange = function(e) {
+        const files = Array.from(e.target.files);
+        const preview = document.getElementById('preview-container');
+        preview.innerHTML = "";
+        imageArray = [];
+
+        if (files.length > 2) { alert("Max 2 images allowed"); e.target.value = ""; return; }
+
+        files.forEach(file => {
+            if (file.size > 500 * 1024) { alert("Image too large! Max 500KB."); return; }
+            const reader = new FileReader();
+            reader.onload = () => {
+                imageArray.push(reader.result);
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.style.width = "70px"; img.style.height = "70px"; img.style.objectFit = "cover";
+                preview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+
+    // SUBMIT LOGIC
+    document.getElementById('mainAdForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.innerText = "CONNECTING TO MONGODB...";
+        btn.disabled = true;
+
+        let citiesToPost = [];
+        if (selectedCity === "GLOBAL_BLAST") {
+            const countryData = locations[selectedCountryCode];
+            for (let st in countryData) citiesToPost = citiesToPost.concat(countryData[st]);
+        } else {
+            citiesToPost = [selectedCity];
+        }
+
+        const adTemplate = {
+            title: document.getElementById('ad-title').value,
+            content: document.getElementById('ad-content').value,
+            age: document.getElementById('ad-age').value,
+            price: document.getElementById('ad-price').value,
+            phone: document.getElementById('ad-phone').value,
+            whatsapp: document.getElementById('ad-whatsapp').value,
+            category: document.getElementById('ad-category').value,
+            images: imageArray,
+            postedAt: new Date()
+        };
+
+        try {
+            for (let city of citiesToPost) {
+                await fetch('http://127.0.0.1:3000/api/ads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...adTemplate, city: city.toLowerCase().trim() })
+                });
+            }
+            alert("Success! Posted to " + citiesToPost.length + " cities.");
+            location.reload();
+        } catch (err) {
+            alert("Error: Is your server.js running on port 3000?");
+            btn.disabled = false;
+        }
+    };
+
+    // DELETE / VIEW LOGIC
+    async function fetchManageAds() {
+        const res = await fetch('http://127.0.0.1:3000/api/ads');
+        const ads = await res.json();
+        const container = document.getElementById('admin-ads-list');
+        container.innerHTML = "";
+        
+        ads.reverse().forEach(ad => {
+            const div = document.createElement('div');
+            div.className = "manage-card";
+            div.innerHTML = `
+                <span><b>${ad.city}</b>: ${ad.title.substring(0,20)}...</span>
+                <button class="delete-btn" onclick="deleteAd('${ad._id}')">Delete</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    async function deleteAd(id) {
+        if (!confirm("Delete this ad forever?")) return;
+        await fetch(`http://127.0.0.1:3000/api/ads/${id}`, { method: 'DELETE' });
+        fetchManageAds();
+    }
+</script>
+</body>
+</html>

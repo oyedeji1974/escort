@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Categories | Omnivo</title>
+    <link rel="stylesheet" href="city.css">
+    <style>
+        :root {
+            --om-orange: #ff5722;
+            --om-black: #000000;
+        }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #fff; }
+        header { background: var(--om-black); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--om-orange); }
+        h1 { margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        main { max-width: 600px; margin: 20px auto; padding: 0 15px; }
+        h2 { color: #888; font-size: 14px; text-transform: uppercase; margin-bottom: 5px; }
+        hr { border: 0; border-top: 1px solid #eee; margin-bottom: 20px; }
+        
+        .category-list { list-style: none; padding: 0; }
+        .category-list li { margin-bottom: 10px; }
+        .category-list a {
+            display: block;
+            padding: 15px;
+            background: #f9f9f9;
+            color: var(--om-black);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: 0.2s;
+            border-left: 0 solid var(--om-orange);
+        }
+        .category-list a:hover {
+            background: #fffcfb;
+            border-left: 5px solid var(--om-orange);
+            color: var(--om-orange);
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="city-title">Select City</h1>
+    </header>
+
+    <main>
+        <h2>Adult Services</h2>
+        <hr>
+        <ul class="category-list">
+            <li><a href="#">Regular Massage</a></li>
+            <li><a href="#">Bodyrubs</a></li>
+            <li><a href="#">Male Massage Therapists</a></li>
+            <li><a href="#">Female Massage Therapist</a></li>
+            <li><a href="#">Strippers & Strip Clubs</a></li>
+            <li><a href="#">Transsexual Massage</a></li>
+        </ul>
+
+        <h2>Quick Links</h2>
+        <hr>
+        <ul class="category-list">
+            <li><a href="#">Bodyrubs Special</a></li>
+            <li><a href="#">Female</a></li>
+        </ul>
+    </main>
+
+    <script>
+        // 1. Get the city name from the URL (e.g., city.html?name=Lagos)
+        const urlParams = new URLSearchParams(window.location.search);
+        const cityName = urlParams.get('name');
+
+        if (cityName) {
+            // Update the Header text
+            document.getElementById('city-title').textContent = cityName;
+
+            // 2. Loop through every link and build the Global Cloud URL
+            document.querySelectorAll('.category-list a').forEach(link => {
+                
+                // Get the text inside the <a> tag (e.g., "Regular Massage")
+                let categoryText = link.textContent.trim().toLowerCase();
+                
+                // Convert spaces to dashes for clean URLs (e.g., "regular-massage")
+                let categorySlug = categoryText.replace(/\s+/g, '-').replace(/[&]/g, 'and');
+
+                // 3. Set the href to point to view-ads.html with BOTH pieces of info
+                // Example: view-ads.html?city=lagos&cat=regular-massage
+                link.href = `view-ads.html?city=${encodeURIComponent(cityName.toLowerCase().trim())}&cat=${categorySlug}`;
+            });
+        } else {
+            // Fallback if no city name is found
+            document.getElementById('city-title').textContent = "Location Error";
+        }
+    </script>
+</body>
+</html>

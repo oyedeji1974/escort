@@ -1,0 +1,363 @@
+/* --- THEME COLORS --- */
+:root {
+    --om-orange: #ff5722;
+    --om-black: #000000;
+    --om-white: #ffffff;
+    --om-bg: #f4f4f4;
+}
+
+/* --- GLOBAL FIXES --- */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--om-bg);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevents side-scrolling/sweeping */
+}
+
+/* FORCE CENTERING: This makes your existing classes 
+   behave like a container without changing your HTML.
+*/
+.top, .locations, .states, .choose {
+    max-width: 1100px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 90%; /* Keeps breathing room on mobile */
+}
+
+/* --- HEADER (BLACK & ORANGE) --- */
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background: var(--om-black) !important; /* Forces black */
+    border-bottom: 4px solid var(--om-orange);
+    max-width: 100% !important; /* Header spans full width background */
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--om-white) !important;
+    text-decoration: none;
+    letter-spacing: -1px;
+    display: flex;
+    align-items: center;
+}
+
+.five {
+    color: var(--om-white) !important;
+}
+
+.escorts {
+    color: var(--om-orange) !important; /* Orange Dot */
+}
+
+.post-ad-container {
+    background-color: var(--om-orange) !important;
+    color: white !important;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+.post-ad-container:hover {
+    transform: scale(1.05);
+}
+
+/* --- MAIN SELECTION GRID --- */
+.choose {
+    font-size: 28px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: var(--om-black);
+    font-weight: bold;
+    text-align: left;
+}
+
+.locations {
+    display: grid !important; /* Switches from flex to grid for perfect alignment */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0 0 50px 0;
+}
+
+.location {
+    background: var(--om-white) !important;
+    color: var(--om-black) !important;
+    text-decoration: none;
+    padding: 30px;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    display: block;
+    border: 2px solid var(--om-black);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.location:hover {
+    border-color: var(--om-orange);
+    color: var(--om-orange) !important;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* --- STATES & CITIES GRID (FIXES THE LIST VIEW) --- */
+.states {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.state {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.state a {
+    color: var(--om-black);
+    text-decoration: none;
+    padding: 5px 0;
+    font-size: 16px;
+    transition: color 0.2s;
+}
+
+.state a:hover {
+    color: var(--om-orange);
+    text-decoration: underline;
+}
+
+/* --- FLOATING BUTTON --- */
+.floating-post-btn {
+    background-color: var(--om-orange) !important;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+}
+
+/* --- RESPONSIVE MOBILE FIX --- */
+@media (max-width: 600px) {
+    .top {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .locations {
+        grid-template-columns: 1fr; /* Stacks boxes perfectly on phones */
+    }
+
+    .location {
+        padding: 20px;
+        font-size: 18px;
+    }
+    
+    .states {
+        grid-template-columns: 1fr 1fr; /* Two columns for cities on mobile */
+    }
+}
+/* --- 2. WIZARD LOGIC (CRITICAL FOR BUTTONS) --- */
+.step { 
+    display: none; 
+} 
+
+/* This forces the step to show when JavaScript triggers it */
+.step.active { 
+    display: block !important; 
+} 
+
+/* --- 3. CONTAINERS & LAYOUT --- */
+.wizard-container, .category-container, .post-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.thick-line {
+    height: 3px;
+    background-color: #000;
+    margin: 10px 0 25px 0;
+}
+
+/* --- 4. FORM ELEMENTS (The "Expensive" Look) --- */
+h1, h2 {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fcfcfc;
+    box-sizing: border-box;
+    transition: border 0.2s;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #000;
+    background-color: #fff;
+}
+
+.btn-next {
+    width: 100%;
+    padding: 16px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-next:hover {
+    background-color: #333;
+}
+
+/* --- 5. LOCATION & CATEGORY LISTS --- */
+.location-list, .category-list li {
+    padding: 18px 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.location-list:after {
+    content: "›"; /* Small professional arrow */
+    color: #bbb;
+    font-size: 24px;
+}
+
+.location-list:hover {
+    background-color: #f9f9f9;
+}
+
+/* --- 6. LINK STYLING (No more cheap blue) --- */
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+.category-list {
+    list-style: none;
+    padding: 0;
+}
+
+.category-list a {
+    color: #0056b3; /* Only use blue for the directory links */
+}
+
+.category-list a:hover {
+    text-decoration: underline;
+}
+
+.floating-post-btn {
+    position: fixed; /* This makes it float */
+    bottom: 30px;    /* Distance from bottom */
+    right: 30px;     /* Distance from right */
+    background-color: #ff5722; /* Your brand orange */
+    color: white;
+    text-decoration: none;
+    padding: 15px 25px;
+    border-radius: 50px; /* Makes it pill-shaped */
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Adds a shadow for depth */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000; /* Ensures it stays on top of all other content */
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.floating-post-btn:hover {
+    background-color: #e64a19;
+    transform: scale(1.05); /* Slight grow effect on hover */
+}
+
+.plus-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+/* On very small screens, hide the text and just show a circle with the '+' */
+@media (max-width: 480px) {
+    .floating-post-btn {
+        padding: 15px;
+        bottom: 20px;
+        right: 20px;
+    }
+    .btn-text {
+        display: none;
+    }
+}
+
+/* Styling for the Ad Display (Where viewers see the logos) */
+.contact-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.icon-link {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.icon-link:hover {
+    transform: scale(1.1);
+}
+
+/* Official Brand Colors */
+.wa { background-color: #25D366; } /* WhatsApp Green */
+.tg { background-color: #0088cc; } /* Telegram Blue */
+.sc { background-color: #FFFC00; color: #000 !important; } /* Snapchat Yellow */
+
+
+/* Official Brand Colors */
+.wa-icon { color: #25D366; font-size: 24px; } /* WhatsApp Green */
+.tg-icon { color: #0088cc; font-size: 24px; } /* Telegram Blue */
+.sc-icon { color: #FFFC00; font-size: 24px; text-shadow: 1px 1px 2px #000; } /* Snapchat Yellow */
+
+.social-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}

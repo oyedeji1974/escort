@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omnivo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="top">
+
+<div class="logo">
+<span class="five">O</span><span class="escorts">mnivo</span>
+</div>
+
+<a class="post-ad-container" href="signup.html" >Post Free Ads</a>
+
+</header>
+
+<div class="divider"></div>
+
+<h2 class="choose">Choose a location:</h2>
+
+<div class="locations">
+
+<!-- <div class="location">United States</div> -->
+<a href="usa.html?region=usa" class="location">United States</a>
+<a href="usa.html?region=canada" class="location">Canada</a>
+<a href="usa.html?region=europe" class="location">Europe</a>
+<a href="usa.html?region=asia" class="location">Asia, Pacific, and Middle East</a>
+<a href="usa.html?region=latinamerica" class="location">Mexico & Latin America</a>
+<a href="usa.html?region=oceania" class="location">Australia and Oceania</a>
+
+<a href="post-ad.html" class="floating-post-btn">
+    <span class="plus-icon">+</span>
+    <span class="btn-text">Post Ad</span>
+</a>
+
+</div>
+<style>
+    .seo-section { max-width: 1200px; margin: 0 auto; padding: 20px; font-family: 'Arial', sans-serif; }
+    .country-header { color: #ff5722; border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 30px; }
+    .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 20px 0; }
+    .city-link { background: #fff; border: 1px solid #ddd; padding: 12px; text-decoration: none; color: #333; text-align: center; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+    .city-link:hover { background: #000; color: #fff; border-color: #000; }
+    .cat-box { text-align: center; background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+    select { padding: 10px; width: 250px; font-size: 16px; border-radius: 5px; }
+</style>
+
+<div class="seo-section">
+    <div class="cat-box">
+        <h3>1. What are you looking for?</h3>
+        <select id="servicePicker" onchange="syncLinks()">
+            <option value="regular-massage">Regular Massage</option>
+            <option value="body-rubs" selected>Body Rubs</option>
+            <option value="male-massage">Male Massage Therapists</option>
+            <option value="female-massage">Female Massage Therapists</option>
+        </select>
+    </div>
+
+    <h2 class="country-header">USA Top Cities</h2>
+    <div class="city-grid" id="usa-grid">
+        <a href="city.html?name=Austin" class="city-link">Austin</a>
+        <a href="city.html?name=New York" class="city-link">New York</a>
+        <a href="city.html?name=Los Angeles" class="city-link">Los Angeles</a>
+        <a href="city.html?name=Las Vegas" class="city-link">Las Vegas</a>
+        <a href="city.html?name=Miami" class="city-link">Miami</a>
+        <a href="city.html?name=Chicago" class="city-link">Chicago</a>
+        <a href="city.html?name=Houston" class="city-link">Houston</a>
+        <a href="city.html?name=Phoenix" class="city-link">Phoenix</a>
+        <a href="city.html?name=Philadelphia" class="city-link">Philadelphia</a>
+        <a href="city.html?name=San Antonio" class="city-link">San Antonio</a>
+        <a href="city.html?name=San Diego" class="city-link">San Diego</a>
+        <a href="city.html?name=Dallas" class="city-link">Dallas</a>
+        <a href="city.html?name=San Jose" class="city-link">San Jose</a>
+        <a href="city.html?name=Jacksonville" class="city-link">Jacksonville</a>
+        <a href="city.html?name=Fort Worth" class="city-link">Fort Worth</a>
+        <a href="city.html?name=Columbus" class="city-link">Columbus</a>
+        <a href="city.html?name=Charlotte" class="city-link">Charlotte</a>
+        <a href="city.html?name=San Francisco" class="city-link">San Francisco</a>
+        <a href="city.html?name=Indianapolis" class="city-link">Indianapolis</a>
+        <a href="city.html?name=Seattle" class="city-link">Seattle</a>
+    </div>
+
+    <h2 class="country-header">Canada Top Cities</h2>
+    <div class="city-grid" id="canada-grid">
+        <a href="city.html?name=Toronto" class="city-link">Toronto</a>
+        <a href="city.html?name=Vancouver" class="city-link">Vancouver</a>
+        <a href="city.html?name=Montreal" class="city-link">Montreal</a>
+        <a href="city.html?name=Calgary" class="city-link">Calgary</a>
+        <a href="city.html?name=Ottawa" class="city-link">Ottawa</a>
+        <a href="city.html?name=Edmonton" class="city-link">Edmonton</a>
+        <a href="city.html?name=Winnipeg" class="city-link">Winnipeg</a>
+        <a href="city.html?name=Quebec City" class="city-link">Quebec City</a>
+        <a href="city.html?name=Hamilton" class="city-link">Hamilton</a>
+        <a href="city.html?name=Brampton" class="city-link">Brampton</a>
+        <a href="city.html?name=Surrey" class="city-link">Surrey</a>
+        <a href="city.html?name=Mississauga" class="city-link">Mississauga</a>
+        <a href="city.html?name=Halifax" class="city-link">Halifax</a>
+        <a href="city.html?name=London" class="city-link">London</a>
+        <a href="city.html?name=Markham" class="city-link">Markham</a>
+        <a href="city.html?name=Vaughan" class="city-link">Vaughan</a>
+        <a href="city.html?name=Gatineau" class="city-link">Gatineau</a>
+        <a href="city.html?name=Saskatoon" class="city-link">Saskatoon</a>
+        <a href="city.html?name=Kitchener" class="city-link">Kitchener</a>
+        <a href="city.html?name=Windsor" class="city-link">Windsor</a>
+    </div>
+</div>
+
+<script>
+    function syncLinks() {
+        const cat = document.getElementById('servicePicker').value;
+        document.querySelectorAll('.city-link').forEach(link => {
+            const url = new URL(link.href, window.location.origin);
+            url.searchParams.set('cat', cat);
+            link.href = url.pathname + url.search;
+        });
+    } 
+</script>
+
+<style>
+  .omnivo-footer-teasers {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 60px 20px;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    border-top: 5px solid #ff5722;
+  }
+
+  .teaser-box {
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
+    border: 1px solid #333;
+    padding: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .teaser-box:hover {
+    transform: translateY(-5px);
+    border-color: #ff5722;
+  }
+
+  .teaser-box h3 {
+    color: #ff5722;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0;
+  }
+
+  .teaser-box p {
+    color: #bbbbbb;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .omnivo-btn {
+    display: inline-block;
+    margin-top: 15px;
+    color: #ffffff;
+    background: #ff5722;
+    padding: 8px 18px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-radius: 2px;
+  }
+
+  .omnivo-btn:hover {
+    background: #e64a19;
+  }
+</style>
+
+<section class="omnivo-footer-teasers">
+  <div class="teaser-box">
+    <h3>About Omnivo</h3>
+    <p>Omnivo is the premier marketplace for professional massage therapy. We connect skilled practitioners with clients seeking wellness...</p>
+    <a href="about.html" target="_blank" class="omnivo-btn">Learn More</a>
+  </div>
+
+  <div class="teaser-box">
+    <h3>Privacy First</h3>
+    <p>Your data security is central to the Omnivo experience. We ensure a safe environment for both ad posters and visitors...</p>
+    <a href="privacy.html" target="_blank" class="omnivo-btn">View Policy</a>
+  </div>
+
+  <div class="teaser-box">
+    <h3>Wellness Blog</h3>
+    <p>From deep tissue recovery to mental clarity, explore our latest articles on how massage therapy transforms lives...</p>
+    <a href="blog.html" target="_blank" class="omnivo-btn">Read Blog</a>
+  </div>
+</section>
+
+
+
+</body>
+<!-- <script src="database.js"></script> -->
+</html>

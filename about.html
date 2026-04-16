@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Omnivo | Massage Marketplace</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            background: #f9f9f9; 
+            color: #333;
+        }
+        
+        /* Responsive Breadcrumb Bar */
+        .breadcrumb-bar {
+            background: #000000;
+            padding: 15px 30px;
+        }
+        .breadcrumbs {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap; /* Keeps it responsive on mobile */
+            padding: 0;
+            margin: 0;
+        }
+        .breadcrumbs li {
+            font-size: 0.9rem;
+            color: #888;
+        }
+        .breadcrumbs li a {
+            color: #ff5722;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .breadcrumbs li + li:before {
+            content: " \203A "; /* Stylish Arrow */
+            margin: 0 10px;
+            color: #555;
+        }
+
+        /* Main Content Container */
+        .page-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 50px;
+            border-top: 10px solid #ff5722;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .brand-accent {
+            color: #ff5722;
+            font-weight: bold;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 20px; color: #000; }
+        h2 { color: #ff5722; margin-top: 40px; }
+        p { line-height: 1.8; font-size: 1.1rem; }
+
+        .contact-card {
+            background: #000;
+            color: #fff;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid #ff5722;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .page-container { margin: 15px; padding: 25px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="breadcrumb-bar">
+    <ul class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li>About Omnivo</li>
+    </ul>
+</nav>
+<a href="post.html" class="floating-post-btn">
+    <span class="plus-icon">+</span>
+    <span class="btn-text">Post Ad</span>
+</a>
+
+<article class="page-container">
+    <h1>Welcome to <span class="brand-accent">Omnivo</span></h1>
+    <p>
+        <strong>Omnivo</strong> is the ultimate digital destination for the massage therapy industry. 
+        We have created a streamlined marketplace where professional therapists can 
+        <strong>post advertisements</strong> and reach a dedicated local audience instantly.
+    </p>
+    
+    <p>
+        Our goal is simple: To provide a high-performance platform that prioritizes 
+        visibility for practitioners and ease of access for clients. Whether you specialize 
+        in sports recovery, Swedish relaxation, or clinical massage, Omnivo is your 
+        partner in growth.
+    </p>
+
+    <h2>Post Your Ad</h2>
+    <p>
+        Ready to reach more clients? Joining the Omnivo community allows you to 
+        showcase your skills, set your own terms, and manage your professional 
+        presence with ease.
+    </p>
+
+    <div class="contact-card">
+        <h3>Contact Us</h3>
+        <p>Have questions about your account or need help with a listing?</p>
+        <p>Email: <a href="mailto:support@omnivo.com" style="color:#ff5722; text-decoration:none;">support@omnivo.com</a></p>
+    </div>
+</article>
+
+</body>
+</html>
