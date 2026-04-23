@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Ads | Omnivo Global</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+:root { --bronze: #CD7F32; --deep-bronze: #804A00; --black: #1a1a1a; --cream: #fffdfb; }
+
+body { font-family: 'Segoe UI', sans-serif; background-color: var(--cream); margin: 0; color: #333; }
+
+.breadcrumb-bar { background: var(--black); padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 3px solid var(--bronze); }
+.back-link { color: var(--bronze); text-decoration: none; font-weight: bold; }
+
+.ads-container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+h1 { margin: 0; text-transform: capitalize; color: var(--black); }
+.line { height: 4px; background: var(--bronze); width: 60px; margin: 15px 0 25px 0; }
+
+/* COLLAPSED STATE - Only shows the name/title */
+.ad-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-left: 5px solid var(--bronze);
+    margin-bottom: 8px;
+    padding: 18px; /* Slightly larger padding for a premium feel */
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.ad-card:hover { background-color: #f9f9f9; }
+
+.ad-title-main {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--black);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ad-title-main::after {
+    content: '+';
+    color: var(--bronze);
+    font-size: 1.5rem;
+}
+
+.ad-card.active .ad-title-main::after { content: '−'; }
+
+/* EXPANDED STATE - Hidden by default */
+.ad-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.ad-card.active .ad-details {
+    max-height: 3000px;
+    margin-top: 20px;
+    border-top: 1px dashed #ccc;
+    padding-top: 15px;
+}
+
+/* Metadata Styling (Price, Age, Location) */
+.meta-info {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: var(--deep-bronze);
+    font-size: 1rem;
+}
+
+.image-gallery { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 10px; }
+.ad-img { width: 250px; height: 350px; object-fit: cover; border-radius: 8px; background: #eee; flex-shrink: 0; }
+
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.btn-action { padding: 12px; text-align: center; border-radius: 4px; text-decoration: none; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+.btn-call { background: var(--black); border-bottom: 3px solid var(--bronze); }
+.btn-wa { background: #25D366; }
+.btn-snap { background: #FFFC00; color: black; }
+.btn-telegram { background: #0088cc; }
+
+.loading { text-align: center; padding: 40px; color: var(--bronze); font-weight: bold; }
+</style>
+</head>
+
+<body>
+
+<nav class="breadcrumb-bar">
+    <a href="javascript:history.back()" class="back-link">← BACK</a>
+    <a href="post-ad.html" class="back-link" style="color:white;">POST +</a>
+</nav>
+
+<div class="ads-container">
+    <h1 id="category-title">Gallery</h1>
+    <div class="line"></div>
+    <div id="ads-list" class="loading">Searching...</div>
+</div>
+
+<script>
+async function loadAds() {
+    const list = document.getElementById('ads-list');
+    const urlParams = new URLSearchParams(window.location.search);
+    const city = urlParams.get('city') || "";
+    const category = urlParams.get('cat') || "";
+
+    try {
+        const res = await fetch(`http://127.0.0.1:3000/api/ads?city=${city}&cat=${category}`);
+        const ads = await res.json();
+
+        if (!ads.length) {
+            list.innerHTML = "No profiles found in this area yet.";
+            return;
+        }
+
+        list.innerHTML = "";
+
+        ads.forEach(ad => {
+            const div = document.createElement('div');
+            div.className = 'ad-card';
+
+            // Gallery logic
+            let imageHtml = "";
+            if (ad.images && ad.images.length > 0) {
+                imageHtml = `<div class="image-gallery">`;
+                ad.images.forEach(img => {
+                    imageHtml += `<img src="${img}" class="ad-img" alt="Gallery Photo" loading="lazy">`;
+                });
+                imageHtml += `</div>`;
+            }
+
+            div.innerHTML = `
+                <div class="ad-title-main">${ad.title}</div>
+
+                <div class="ad-details">
+                    <div class="meta-info">
+                        <span><i class="fa fa-tag"></i> $${ad.price}</span>
+                        <span><i class="fa fa-user"></i> Age: ${ad.age}</span>
+                        <span><i class="fa fa-map-marker-alt"></i> ${ad.city}</span>
+                    </div>
+
+                    ${imageHtml}
+                    
+                    <p style="white-space: pre-line; line-height: 1.6; font-size: 1.05rem;">${ad.content || ad.description}</p>
+
+                    <div class="contact-grid">
+                        <a href="tel:${ad.phone}" class="btn-action btn-call"><i class="fa fa-phone"></i> Call</a>
+                        <a href="https://wa.me/${ad.whatsapp || ad.phone}" target="_blank" class="btn-action btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        ${ad.snapchat ? `<a href="https://snapchat.com/add/${ad.snapchat}" class="btn-action btn-snap"><i class="fab fa-snapchat"></i> Snap: ${ad.snapchat}</a>` : ''}
+                        ${ad.telegram ? `<a href="https://t.me/${ad.telegram}" class="btn-action btn-telegram"><i class="fab fa-telegram"></i> Telegram</a>` : ''}
+                    </div>
+                </div>
+            `;
+
+            div.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'A' && !e.target.closest('.btn-action')) {
+                    div.classList.toggle('active');
+                }
+            });
+
+            list.appendChild(div);
+        });
+
+    } catch (err) {
+        list.innerHTML = `<div style="color:red;">Server connection error. Ensure your backend is running.</div>`;
+    }
+}
+loadAds();
+</script>
+
+</body>
+</html>
