@@ -14,7 +14,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 3. Middleware - High-speed settings
-app.use(cors()); 
+app.use(cors({
+    origin: ["https://your-site.vercel.app", "http://localhost:3000"]
+})); 
 app.use(express.json({ limit: '50mb' })); 
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
