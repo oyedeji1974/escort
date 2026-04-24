@@ -165,8 +165,8 @@ async function loadAds() {
 
     try {
         // IMPORTANT: We filter by city on the server to keep it fast
-        const res = await fetch(`http://localhost:3000/api/ads?city=${city.toLowerCase()}&cat=${category}`);
-        const ads = await res.json();
+       const res = await fetch(`/api/ads?city=${city.toLowerCase()}&cat=${category}`);
+const ads = await res.json();
 
         if (!ads.length) {
             list.innerHTML = `<div style="text-align:center; padding:50px;">No ads found in ${city}.</div>`;

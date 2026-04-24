@@ -224,11 +224,11 @@
         };
 
         try {
-            const response = await fetch('http://127.0.0.1:3000/api/ads', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newAd)
-            });
+    const response = await fetch('/api/ads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newAd)
+    });
             if (response.ok) {
                 document.getElementById('adForm').style.display = "none";
                 document.getElementById('success-msg').style.display = "block";
