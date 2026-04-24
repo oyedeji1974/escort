@@ -1,127 +1,86 @@
 // ==========================
-// OMNIVO MAIN SCRIPT
+// OMNIVO MAIN SCRIPT (MONGODB VERSION)
 // ==========================
 
-// GET URL PARAMS
+// 1. GET URL PARAMS
 function getParams() {
     const params = new URLSearchParams(window.location.search);
-
     return {
         city: params.get("city") || ""
     };
 }
 
-
-// GET ADS FROM STORAGE
-function getAllAds() {
-    return JSON.parse(localStorage.getItem("allAds")) || [];
+// 2. GET ADS FROM MONGODB (The real database)
+async function getAdsFromServer(city, category = "") {
+    try {
+        // We call your Node.js API instead of localStorage
+        const response = await fetch(`http://localhost:3000/api/ads?city=${city}&cat=${category}`);
+        if (!response.ok) throw new Error("Server error");
+        return await response.json();
+    } catch (err) {
+        console.error("Database Error:", err);
+        return [];
+    }
 }
 
-
-// FILTER ADS
-function getFilteredAds(city, category = "") {
-    let ads = getAllAds();
-
-    // FILTER BY CITY
-    if (city) {
-        let searchCity = city.toLowerCase().replace(/-/g, " ").trim();
-
-        ads = ads.filter(ad => {
-            let adCity = (ad.city || "").toLowerCase().trim();
-            return adCity.includes(searchCity);
-        });
-    }
-
-    // FILTER BY CATEGORY (ONLY WHEN CLICKED)
-    if (category) {
-        ads = ads.filter(ad => {
-            let adCat = (ad.category || "").toLowerCase();
-            return adCat.includes(category.toLowerCase());
-        });
-    }
-
-    return ads.reverse();
-}
-
-
-// RENDER ADS
+// 3. RENDER ADS (Matching your clean "collapsed" style)
 function renderAds(ads) {
     const container = document.getElementById("ads-container");
-
     if (!container) return;
 
     container.innerHTML = "";
 
     if (ads.length === 0) {
-        container.innerHTML = "<p>No ads found in this city.</p>";
+        container.innerHTML = "<p style='text-align:center; padding:20px;'>No profiles found in this area yet.</p>";
         return;
     }
 
     ads.forEach(ad => {
         const div = document.createElement("div");
-        div.classList.add("ad-box");
+        div.classList.add("ad-card"); // Using the style from view-ads.html
 
         div.innerHTML = `
-            <h3>${ad.title || "No Title"}</h3>
-            <p><strong>City:</strong> ${ad.city}</p>
-            <p><strong>Category:</strong> ${ad.category}</p>
-            <p>${ad.description || ""}</p>
+            <div class="ad-title-main">${ad.title}</div>
+            <div class="ad-details">
+                <p><strong>Price:</strong> $${ad.price}</p>
+                <p><strong>Age:</strong> ${ad.age}</p>
+                <p>${ad.content || ad.description || ""}</p>
+            </div>
         `;
 
+        div.onclick = () => div.classList.toggle('active');
         container.appendChild(div);
     });
 }
 
-
-// SET CITY TITLE
+// 4. SET CITY TITLE
 function setCityTitle(city) {
     const title = document.getElementById("city-title");
-
     if (!title) return;
-
-    let cleanCity = city.replace(/-/g, " ");
-
-    title.innerText = cleanCity.toUpperCase();
+    title.innerText = city.replace(/-/g, " ").toUpperCase();
 }
 
-
-// INITIAL LOAD
-function initPage() {
+// 5. INITIAL LOAD (The Start Button)
+async function initPage() {
     const { city } = getParams();
-
-    if (!city) {
-        alert("No city selected");
-        return;
-    }
+    if (!city) return;
 
     setCityTitle(city);
+    
+    // Show a loading message
+    const container = document.getElementById("ads-container");
+    if(container) container.innerHTML = "Searching database...";
 
-    // LOAD ALL ADS FOR CITY FIRST
-    const ads = getFilteredAds(city);
-
+    const ads = await getAdsFromServer(city);
     renderAds(ads);
 }
 
-
-// CATEGORY FILTER (RUNS WHEN BUTTON CLICKED)
-function filterCategory(category) {
+// 6. CATEGORY FILTER
+async function filterCategory(category) {
     const { city } = getParams();
-
-    const ads = getFilteredAds(city, category);
-
+    const ads = await getAdsFromServer(city, category);
     renderAds(ads);
 }
 
-
-// RUN PAGE
-// document.addEventListener("DOMContentLoaded", initPage);
-
-
-// ==========================
-// DEBUG TOOL (OPTIONAL)
-// ==========================
-function clearDB() {
-    localStorage.removeItem("allAds");
-    alert("Database cleared");
-    location.reload();
-}
+// RUN
+document.addEventListener("DOMContentLoaded", initPage);
