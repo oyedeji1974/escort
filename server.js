@@ -1,8 +1,7 @@
-﻿
-const dns = require('node:dns');
+﻿const dns = require('node:dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']); // Forces use of Google DNS
-// 1. Load environment variables
 
+// 1. Load environment variables
 require('dotenv').config();
 
 // 2. Import dependencies
@@ -11,12 +10,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // 3. Middleware - High-speed settings
-app.use(cors({
-    origin: ["https://your-site.vercel.app", "http://localhost:3000"]
-})); 
+// Updated CORS to be more flexible for your Vercel deployment
+app.use(cors()); 
 app.use(express.json({ limit: '50mb' })); 
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -36,36 +33,26 @@ const adSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now, index: true } 
 });
 
-const Ad = mongoose.model('Ad', adSchema);
+// Check if model exists to prevent re-compilation errors on Vercel
+const Ad = mongoose.models.Ad || mongoose.model('Ad', adSchema);
 
-// 5. MongoDB Connection Logic with Debugging
+// 5. MongoDB Connection Logic
 const dbURI = process.env.MONGO_URI;
 
-console.log('--- SYSTEM CHECK ---');
-console.log('Checking .env file...');
 if (!dbURI) {
-    console.error('❌ ERROR: MONGO_URI is missing from your .env file!');
-    console.log('Make sure the .env file is inside the "backend" folder.');
-} else {
-    console.log('✅ MONGO_URI found. Attempting to connect...');
+    console.error('❌ ERROR: MONGO_URI is missing from Environment Variables!');
 }
 
+// Connect to MongoDB (Vercel best practice: connect outside the listener)
 mongoose.connect(dbURI, {
-    serverSelectionTimeoutMS: 5000 // Fails after 5 seconds instead of hanging
+    serverSelectionTimeoutMS: 5000
 })
-    .then(() => {
-        console.log('--------------------------------------------');
-        console.log('✅ SUCCESS: Connected to MongoDB Atlas');
-        console.log('--------------------------------------------');
-        app.listen(PORT, () => console.log(`🚀 Server on: http://localhost:${PORT}`));
-    })
-    .catch((err) => {
-        console.log('--------------------------------------------');
-        console.error('❌ CONNECTION FAILED');
-        console.error('Reason:', err.message);
-        console.log('Tip: Check if your IP is whitelisted (0.0.0.0/0) in Atlas.');
-        console.log('--------------------------------------------');
-    });
+.then(() => {
+    console.log('✅ Connected to MongoDB Atlas');
+})
+.catch((err) => {
+    console.error('❌ CONNECTION FAILED:', err.message);
+});
 
 // 6. ROUTES - Optimized for 1000+ Ads
 app.get('/api/ads', async (req, res) => {
@@ -78,7 +65,7 @@ app.get('/api/ads', async (req, res) => {
 
         const ads = await Ad.find(query)
             .sort({ createdAt: -1 })
-            .limit(20) // Only sends 20 at a time to stay fast
+            .limit(20) 
             .lean();   
 
         res.json(ads);
@@ -100,3 +87,8 @@ app.post('/api/ads', async (req, res) => {
 app.get('/', (req, res) => {
     res.status(200).json({ message: "Omnivo API Online" });
 });
+
+// 7. EXPORT FOR VERCEL
+// We remove app.listen and export the app instead.
+// This allows Vercel to handle the server execution.
+module.exports = app;
