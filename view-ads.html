@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>View Ads | Omnivo Global</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -14,140 +14,188 @@
             --bedpage-blue: #0000ee;
             --wa-green: #25D366;
             --phone-purple: #6b4fbb;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        body { font-family: Arial, sans-serif; background-color: white; margin: 0; color: #333; }
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: #f8f9fa; 
+            margin: 0; 
+            color: #333; 
+            line-height: 1.5;
+        }
 
-        /* HEADER BAR */
+        /* HEADER BAR - Sleeker height */
         .breadcrumb-bar { 
             background: var(--black); 
-            padding: 15px 20px; 
+            padding: 12px 15px; 
             display: flex; 
             justify-content: space-between; 
+            align-items: center;
             border-bottom: 3px solid var(--bronze); 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .back-link { color: var(--bronze); text-decoration: none; font-weight: bold; }
+        .back-link { color: var(--bronze); text-decoration: none; font-weight: 700; font-size: 14px; }
 
-        .ads-container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .ads-container { 
+            max-width: 600px; /* Tighter for mobile focus */
+            margin: 0 auto; 
+            padding: 10px; 
+        }
         
-        /* DYNAMIC HEADING STYLE */
+        /* DYNAMIC HEADING */
         #city-heading { 
-            margin: 0; 
+            margin: 15px 0 5px 0; 
             text-transform: uppercase; 
             color: var(--black); 
-            font-size: 26px; 
+            font-size: 22px; 
             font-weight: 900;
             text-align: center;
+            letter-spacing: 1px;
         }
         .gold-text { color: var(--bronze); }
-        .line-center { height: 4px; background: var(--bronze); width: 60px; margin: 10px auto 25px auto; }
+        .line-center { height: 3px; background: var(--bronze); width: 40px; margin: 5px auto 20px auto; }
 
-        /* THE LIST ITEM (COLLAPSED) */
+        /* THE LIST ITEM */
         .ad-card {
             background: white;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 2px;
+            border-radius: 8px; /* Rounded corners for modern look */
+            margin-bottom: 12px;
             cursor: pointer;
-            transition: background 0.2s;
+            border: 1px solid #eee;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
         }
-        .ad-card:hover { background-color: #fcfaf8; }
+        .ad-card:active { transform: scale(0.98); }
 
-        .ad-row-summary { padding: 15px; display: flex; flex-direction: column; }
+        .ad-row-summary { 
+            padding: 16px; 
+            display: flex; 
+            flex-direction: column; 
+            background: #ffffff;
+        }
 
         .ad-title-link {
             color: var(--bedpage-blue);
-            font-size: 19px;
-            font-weight: bold;
-            text-decoration: underline;
-            margin-bottom: 4px;
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none; /* Cleaner look */
+            margin-bottom: 6px;
+            line-height: 1.2;
         }
 
-        .ad-subtitle { color: #666; font-size: 14px; font-weight: bold; }
+        .ad-subtitle { 
+            color: #555; 
+            font-size: 13px; 
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .ad-subtitle::before { content: '📍'; font-size: 12px; }
 
-        /* THE DETAIL VIEW (EXPANDED) */
+        /* THE DETAIL VIEW */
         .ad-details {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease-in-out;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
             background: #fff;
         }
 
         .ad-card.active .ad-details {
-            max-height: 5000px; /* Large enough to fit any content */
-            padding: 20px 15px;
-            border-top: 1px solid #eee;
+            max-height: 10000px; 
+            padding: 0 15px 20px 15px;
+            border-top: 1px solid #f0f0f0;
             background: var(--cream);
         }
 
-        /* 4-BUTTON GRID */
+        /* 4-BUTTON GRID - Optimized for Thumbs */
         .action-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(2, 1fr); /* 2x2 grid is much better for mobile thumbs */
+            gap: 10px;
             margin: 15px 0;
         }
 
         .btn-action {
-            padding: 12px 5px;
+            padding: 14px 5px;
             text-align: center;
-            border-radius: 4px;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 800;
             color: white;
-            font-size: 12px;
+            font-size: 13px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Icon next to text for 2x2 grid */
+            justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            text-transform: uppercase;
         }
 
-        .btn-wa { background: var(--wa-green); }
-        .btn-call { background: var(--black); border-bottom: 2px solid var(--bronze); }
-        .btn-sms { background: #3b82f6; }
-        .btn-report { background: #ef4444; }
+        .btn-wa { background: var(--wa-green); box-shadow: 0 3px 0 #1da851; }
+        .btn-call { background: var(--black); box-shadow: 0 3px 0 #000; border-bottom: 2px solid var(--bronze); }
+        .btn-sms { background: #3b82f6; box-shadow: 0 3px 0 #1d4ed8; }
+        .btn-report { background: #ef4444; box-shadow: 0 3px 0 #b91c1c; }
 
-        /* 2x2 IMAGE GRID */
+        /* IMAGE GRID - High Visibility */
         .image-gallery {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            display: flex;
+            flex-direction: column; /* Vertical stack is better for showing full detail on small screens */
+            gap: 10px;
             margin: 15px 0;
         }
 
         .ad-img {
             width: 100%;
-            height: 350px;
+            height: auto;
+            max-height: 450px;
             object-fit: cover;
-            border-radius: 6px;
-            background: #eee;
+            border-radius: 8px;
+            border: 1px solid #ddd;
         }
 
-        /* INFO TABLE */
+        /* INFO TABLE - Mobile friendly rows */
         .info-table {
             border-top: 2px solid var(--bronze);
             padding-top: 15px;
             margin-top: 20px;
+            background: #fdfdfd;
         }
 
-        .info-row { display: flex; margin-bottom: 10px; font-size: 15px; }
-        .info-label { width: 130px; font-weight: bold; color: var(--black); }
+        .info-row { 
+            display: flex; 
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 14px; 
+        }
+        .info-label { font-weight: 800; color: #777; font-size: 12px; }
+        .info-value { font-weight: 700; color: var(--black); }
 
-        .loading { text-align: center; padding: 40px; color: var(--bronze); font-weight: bold; }
+        .loading { text-align: center; padding: 60px 20px; color: var(--bronze); font-weight: bold; font-size: 14px; }
+        
+        /* Pulse Animation for Loading */
+        .loading { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
     </style>
 </head>
 
 <body>
 
 <nav class="breadcrumb-bar">
-    <a href="javascript:history.back()" class="back-link">← BACK</a>
-    <a href="post-ad.html" class="back-link" style="color:white;">POST +</a>
+    <a href="javascript:history.back()" class="back-link"><i class="fa fa-chevron-left"></i> BACK</a>
+    <a href="post-ad.html" class="back-link" style="color:white; background:var(--bronze); padding: 5px 12px; border-radius: 4px;">POST +</a>
 </nav>
 
 <div class="ads-container">
     <h1 id="city-heading">LATEST IN <span class="gold-text">GALLERY</span></h1>
     <div class="line-center"></div>
     
-    <div id="ads-list" class="loading">CONNECTING TO DATABASE...</div>
+    <div id="ads-list" class="loading">SEARCHING FOR ADS...</div>
 </div>
 
 <script>
@@ -158,18 +206,17 @@ async function loadAds() {
     const city = urlParams.get('city') || "";
     const category = urlParams.get('cat') || "";
 
-    // Set Dynamic Heading
     if(city) {
         header.innerHTML = `LATEST IN <span class="gold-text">${city.toUpperCase()}</span>`;
     }
 
     try {
-        // IMPORTANT: We filter by city on the server to keep it fast
-       const res = await fetch(`/api/ads?city=${city.toLowerCase()}&cat=${category}`);
-const ads = await res.json();
+        const res = await fetch(`/api/ads${window.location.search}`);
+        if (!res.ok) throw new Error(`Server status: ${res.status}`);
+        const ads = await res.json();
 
         if (!ads.length) {
-            list.innerHTML = `<div style="text-align:center; padding:50px;">No ads found in ${city}.</div>`;
+            list.innerHTML = `<div style="text-align:center; padding:50px; font-weight:bold; color:#888;">No ads found in ${city || 'this area'}.</div>`;
             return;
         }
 
@@ -179,7 +226,6 @@ const ads = await res.json();
             const div = document.createElement('div');
             div.className = 'ad-card';
 
-            // Build Image Gallery
             let imageHtml = "";
             if (ad.images && ad.images.length > 0) {
                 imageHtml = `<div class="image-gallery">`;
@@ -192,44 +238,42 @@ const ads = await res.json();
             div.innerHTML = `
                 <div class="ad-row-summary">
                     <div class="ad-title-link">!! ${ad.title.toUpperCase()} !!</div>
-                    <div class="ad-subtitle">${ad.phone} - ${ad.city.toUpperCase()}</div>
+                    <div class="ad-subtitle">${ad.city.toUpperCase()} - CLICK TO VIEW</div>
                 </div>
 
                 <div class="ad-details">
-                    <div style="font-size:20px; font-weight:900; margin-bottom:15px; color:var(--black);">
-                        !! ${ad.title.toUpperCase()} !!
+                    <div style="font-size:18px; font-weight:900; margin: 10px 0; color:var(--black); border-left: 4px solid var(--bronze); padding-left: 10px;">
+                        ${ad.title.toUpperCase()}
                     </div>
 
                     <div class="action-grid">
-                        <a href="https://wa.me/${ad.phone}" target="_blank" class="btn-action btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="tel:${ad.phone}" class="btn-action btn-call"><i class="fa fa-phone"></i> Call</a>
+                        <a href="https://wa.me/${ad.phone}" target="_blank" class="btn-action btn-wa"><i class="fab fa-whatsapp"></i> WHATSAPP</a>
+                        <a href="tel:${ad.phone}" class="btn-action btn-call"><i class="fa fa-phone"></i> CALL</a>
                         <a href="sms:${ad.phone}" class="btn-action btn-sms"><i class="fa fa-comment"></i> SMS</a>
-                        <a href="#" class="btn-action btn-report"><i class="fa fa-flag"></i> Report</a>
+                        <a href="#" class="btn-action btn-report"><i class="fa fa-flag"></i> REPORT</a>
                     </div>
 
                     ${imageHtml}
 
-                    <p style="white-space: pre-line; line-height: 1.8; margin: 20px 0; font-size:16px;">
+                    <p style="white-space: pre-line; line-height: 1.6; margin: 20px 0; font-size:15px; color:#444; background: #fff; padding: 10px; border-radius: 5px;">
                         ${ad.content || ad.description}
                     </p>
 
                     <div class="info-table">
-                        <div class="info-row"><div class="info-label">POSTER AGE :</div><div>${ad.age}</div></div>
-                        <div class="info-row"><div class="info-label">MOBILE :</div><div>${ad.phone}</div></div>
-                        <div class="info-row"><div class="info-label">PRICE :</div><div style="color:var(--bronze); font-weight:bold;">$${ad.price}</div></div>
-                        <div class="info-row"><div class="info-label">LOCATION :</div><div>${ad.city.toUpperCase()}</div></div>
+                        <div class="info-row"><span class="info-label">AGE</span><span class="info-value">${ad.age}</span></div>
+                        <div class="info-row"><span class="info-label">MOBILE</span><span class="info-value">${ad.phone}</span></div>
+                        <div class="info-row"><span class="info-label">PRICE</span><span class="info-value" style="color:var(--bronze);">$${ad.price}</span></div>
+                        <div class="info-row"><span class="info-label">LOCATION</span><span class="info-value">${ad.city.toUpperCase()}</span></div>
                     </div>
                 </div>
             `;
 
-            // Click logic for expansion
             div.addEventListener('click', (e) => {
-                // Don't collapse if clicking a button or link
                 if (e.target.tagName !== 'A' && !e.target.closest('.btn-action')) {
-                    // Close other active cards first (optional, for a cleaner look)
-                    // document.querySelectorAll('.ad-card.active').forEach(card => { if(card !== div) card.classList.remove('active'); });
-                    
                     div.classList.toggle('active');
+                    if(div.classList.contains('active')) {
+                        setTimeout(() => div.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+                    }
                 }
             });
 
@@ -237,7 +281,12 @@ const ads = await res.json();
         });
 
     } catch (err) {
-        list.innerHTML = `<div style="color:red; text-align:center;">SERVER ERROR: Please ensure your backend is running on port 3000.</div>`;
+        console.error("Fetch Error:", err);
+        list.innerHTML = `<div style="color:red; text-align:center; padding:20px; font-size:14px;">
+            <strong>DATABASE CONNECTION ERROR</strong><br>
+            <small>${err.message}</small><br><br>
+            <button onclick="location.reload()" style="background:var(--bronze); color:white; border:none; padding:10px 20px; border-radius:5px; font-weight:bold;">RETRY NOW</button>
+        </div>`;
     }
 }
 
