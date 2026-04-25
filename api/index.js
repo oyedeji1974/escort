@@ -45,7 +45,8 @@ if (!dbURI) {
 
 // Connect to MongoDB (Vercel best practice: connect outside the listener)
 mongoose.connect(dbURI, {
-    serverSelectionTimeoutMS: 5000
+    serverSelectionTimeoutMS: 10000, // Give it 10 seconds
+    connectTimeoutMS: 10000
 })
 .then(() => {
     console.log('✅ Connected to MongoDB Atlas');
