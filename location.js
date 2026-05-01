@@ -1,4 +1,4 @@
-const locations = {
+window.locations = {
 usa: {
 Alabama: ["Birmingham","Huntsville","Montgomery","Mobile","Tuscaloosa","Hoover","Decatur","Dothan","Auburn","Madison"],
     Alaska: ["Anchorage","Fairbanks","Juneau","Sitka","Wasilla","Ketchikan","Kenai","Kodiak","Bethel","Palmer"],
