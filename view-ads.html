@@ -207,7 +207,10 @@ async function loadAds() {
 
     try {
         const res = await fetch(`/api/ads${window.location.search}`);
-        if (!res.ok) throw new Error(`Could not establish a secure connection (Code: ${res.status})`);
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`Server returned ${res.status}: ${text || res.statusText}`);
+        }
         const ads = await res.json();
 
         if (!ads.length) {
