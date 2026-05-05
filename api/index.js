@@ -36,17 +36,21 @@ let isConnected = false;
 const connectDB = async () => {
     if (isConnected) return;
     try {
-        const db = await mongoose.connect(process.env.MONGO_URI);
+        const db = await mongoose.connect(process.env.MONGO_URI, {
+            serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+        });
         isConnected = db.connections[0].readyState;
         console.log('✅ MongoDB Connected');
     } catch (err) {
         console.error('❌ DB Error:', err.message);
+        throw err; // Re-throw to handle in routes
     }
 };
 
 // 6. ROUTES 
 // REMOVED "/api" from the path here because vercel.json adds it automatically
 app.get('/ads', async (req, res) => {
+    console.log('GET /ads called with query:', req.query);
     await connectDB();
     try {
         const { city, cat } = req.query;
@@ -56,13 +60,16 @@ app.get('/ads', async (req, res) => {
         if (city) query.city = { $regex: new RegExp("^" + city.trim() + "$", "i") };
         if (cat) query.category = { $regex: new RegExp("^" + cat.trim() + "$", "i") };
 
+        console.log('Query:', query);
         const ads = await Ad.find(query)
             .sort({ createdAt: -1 })
             .limit(20) 
             .lean();   
 
+        console.log('Ads found:', ads.length);
         res.json(ads);
     } catch (err) {
+        console.error('Error in GET /ads:', err);
         res.status(500).json({ error: "Failed to fetch ads" });
     }
 });
