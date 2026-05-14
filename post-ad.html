@@ -146,6 +146,10 @@
     let selectedCity = "";
     let imageArray = []; 
 
+    // --- API URL LOGIC ---
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const API_ENDPOINT = isLocal ? "http://localhost:3000/api/ads" : "/api/ads";
+
     window.nextStep = function(num) {
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
         document.getElementById('step' + num).classList.add('active');
@@ -156,7 +160,7 @@
         const container = document.getElementById('city-list-container');
         container.innerHTML = "";
         if (typeof locations === 'undefined') {
-            alert("Error: location.js not found. Check if the file exists.");
+            alert("Error: location.js not found.");
             return;
         }
         const regions = locations[country];
@@ -206,41 +210,48 @@
     document.getElementById('adForm').onsubmit = async function(e) {
         e.preventDefault();
         const btn = document.getElementById('submit-btn');
+        const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
         btn.innerText = "UPLOADING...";
         btn.disabled = true;
 
-        const newAd = {
+        const adData = {
             city: selectedCity.toLowerCase().trim(),
             category: document.getElementById('ad-category').value,
             title: document.getElementById('ad-title').value,
-            phone: document.getElementById('ad-phone').value,
-            content: document.getElementById('ad-content').value,
+            description: document.getElementById('ad-content').value, // Matches backend 'description'
             price: document.getElementById('ad-price').value,
             age: document.getElementById('ad-age').value,
+            phone: document.getElementById('ad-phone').value,
             whatsapp: document.getElementById('whatsapp').value,
             telegram: document.getElementById('telegram').value,
             snapchat: document.getElementById('snapchat').value,
-            images: imageArray 
+            image: imageArray[0] || "", // Matches backend 'image'
+            userId: user.id || null
         };
 
         try {
-    const response = await fetch('/api/ads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newAd)
-    });
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(adData)
+            });
+
             if (response.ok) {
                 document.getElementById('adForm').style.display = "none";
                 document.getElementById('success-msg').style.display = "block";
                 setTimeout(() => { window.location.href = "index.html"; }, 2000);
             } else {
-                alert("Upload failed.");
+                const errData = await response.json();
+                alert("Upload failed: " + (errData.message || "Unknown error"));
                 btn.disabled = false;
                 btn.innerText = "POST AD";
             }
         } catch (err) {
+            console.error("Ad Upload Error:", err);
             alert("Connection error.");
             btn.disabled = false;
+            btn.innerText = "POST AD";
         }
     };
 </script>

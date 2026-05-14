@@ -25,7 +25,7 @@
             line-height: 1.5;
         }
 
-        /* HEADER BAR - Sticky & Sleek */
+        /* HEADER BAR */
         .breadcrumb-bar { 
             background: var(--black); 
             padding: 12px 15px; 
@@ -46,7 +46,6 @@
             padding: 10px; 
         }
         
-        /* DYNAMIC HEADING */
         #city-heading { 
             margin: 20px 0 5px 0; 
             text-transform: uppercase; 
@@ -59,7 +58,7 @@
         .gold-text { color: var(--bronze); }
         .line-center { height: 3px; background: var(--bronze); width: 40px; margin: 5px auto 25px auto; }
 
-        /* THE LIST ITEM - Professional Card Look */
+        /* AD CARDS */
         .ad-card {
             background: white;
             border-radius: 10px;
@@ -95,7 +94,6 @@
             text-transform: uppercase;
         }
 
-        /* THE DETAIL VIEW */
         .ad-details {
             max-height: 0;
             overflow: hidden;
@@ -110,7 +108,6 @@
             background: var(--cream);
         }
 
-        /* 4-BUTTON GRID - High Conversion Layout */
         .action-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr); 
@@ -127,7 +124,6 @@
             color: white;
             font-size: 13px;
             display: flex;
-            flex-direction: row; 
             justify-content: center;
             align-items: center;
             gap: 8px;
@@ -139,7 +135,6 @@
         .btn-sms { background: #3b82f6; box-shadow: 0 4px 0 #1d4ed8; }
         .btn-report { background: #ef4444; box-shadow: 0 4px 0 #b91c1c; }
 
-        /* IMAGE GALLERY - Full Width Impact */
         .image-gallery {
             display: flex;
             flex-direction: column; 
@@ -150,13 +145,10 @@
         .ad-img {
             width: 100%;
             height: auto;
-            max-height: 500px;
-            object-fit: cover;
             border-radius: 8px;
             border: 1px solid #ddd;
         }
 
-        /* INFO TABLE */
         .info-table {
             border-top: 2px solid var(--bronze);
             padding-top: 15px;
@@ -173,12 +165,10 @@
         .info-label { font-weight: 800; color: #888; font-size: 11px; text-transform: uppercase; }
         .info-value { font-weight: 700; color: var(--black); }
 
-        .loading { text-align: center; padding: 60px 20px; color: var(--bronze); font-weight: bold; font-size: 14px; }
-        .loading { animation: pulse 1.5s infinite; }
+        .loading { text-align: center; padding: 60px 20px; color: var(--bronze); font-weight: bold; font-size: 14px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
     </style>
 </head>
-
 <body>
 
 <nav class="breadcrumb-bar">
@@ -189,7 +179,6 @@
 <div class="ads-container">
     <h1 id="city-heading">LATEST IN <span class="gold-text">GALLERY</span></h1>
     <div class="line-center"></div>
-    
     <div id="ads-list" class="loading">SYNCING WITH LIVE DATABASE...</div>
 </div>
 
@@ -199,26 +188,32 @@ async function loadAds() {
     const header = document.getElementById('city-heading');
     const urlParams = new URLSearchParams(window.location.search);
     const city = urlParams.get('city') || "";
-    const category = urlParams.get('cat') || "";
 
     if(city) {
-        header.innerHTML = `LATEST IN <span class="gold-text">${city.toUpperCase()}</span>`;
+        header.innerHTML = `LATEST IN <span class="gold-text">${decodeURIComponent(city).toUpperCase()}</span>`;
     }
 
+    // AUTO-DETECT ENVIRONMENT
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const baseUrl = isLocal ? 'http://localhost:3000' : '';
+    const fetchUrl = `${baseUrl}/api/ads${window.location.search}`;
+
     try {
-        const res = await fetch(`/api/ads${window.location.search}`);
+        const res = await fetch(fetchUrl);
+        
         if (!res.ok) {
-            const text = await res.text();
-            throw new Error(`Server returned ${res.status}: ${text || res.statusText}`);
+            const errorText = await res.text();
+            throw new Error(`Status ${res.status}: ${errorText}`);
         }
+
         const ads = await res.json();
 
-        if (!ads.length) {
-            list.innerHTML = `<div style="text-align:center; padding:50px; font-weight:bold; color:#888;">No active ads found for ${city || 'this category'}.</div>`;
+        if (!ads || ads.length === 0) {
+            list.innerHTML = `<div style="text-align:center; padding:50px; font-weight:bold; color:#888;">No active ads found for ${city || 'this area'}.</div>`;
             return;
         }
 
-        list.innerHTML = "";
+        list.innerHTML = ""; // Clear loading message
 
         ads.forEach(ad => {
             const div = document.createElement('div');
@@ -254,13 +249,13 @@ async function loadAds() {
                     ${imageHtml}
 
                     <p style="white-space: pre-line; line-height: 1.8; margin: 20px 0; font-size:16px; color:#333; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
-                        ${ad.content || ad.description}
+                        ${ad.content || ad.description || "No description provided."}
                     </p>
 
                     <div class="info-table">
-                        <div class="info-row"><span class="info-label">POSTER AGE</span><span class="info-value">${ad.age}</span></div>
-                        <div class="info-row"><span class="info-label">VERIFIED MOBILE</span><span class="info-value">${ad.phone}</span></div>
-                        <div class="info-row"><span class="info-label">RATE</span><span class="info-value" style="color:var(--bronze); font-size:16px;">$${ad.price}</span></div>
+                        <div class="info-row"><span class="info-label">POSTER AGE</span><span class="info-value">${ad.age || 'N/A'}</span></div>
+                        <div class="info-row"><span class="info-label">VERIFIED MOBILE</span><span class="info-value">${ad.phone || 'N/A'}</span></div>
+                        <div class="info-row"><span class="info-label">RATE</span><span class="info-value" style="color:var(--bronze); font-size:16px;">$${ad.price || '0'}</span></div>
                         <div class="info-row"><span class="info-label">LOCATION</span><span class="info-value">${ad.city.toUpperCase()}</span></div>
                     </div>
                 </div>
@@ -282,9 +277,9 @@ async function loadAds() {
         console.error("Fetch Error:", err);
         list.innerHTML = `<div style="text-align:center; padding:30px; background:white; border-radius:10px; box-shadow:var(--shadow);">
             <div style="color:var(--bronze); font-size:40px; margin-bottom:10px;"><i class="fa fa-exclamation-triangle"></i></div>
-            <strong style="color:var(--black); font-size:16px;">LIVE CONNECTION ISSUES</strong><br>
-            <p style="color:#666; font-size:13px; margin: 10px 0;">Our server is currently unreachable. This could be due to a slow network or server maintenance.</p>
-            <button onclick="location.reload()" style="background:var(--bronze); color:white; border:none; padding:12px 25px; border-radius:6px; font-weight:800; cursor:pointer; width:100%; max-width:200px;">RETRY CONNECTION</button>
+            <strong style="color:var(--black);">CONNECTION ERROR</strong><br>
+            <p style="color:#666; font-size:13px; margin: 10px 0;">Error details: ${err.message}</p>
+            <button onclick="location.reload()" style="background:var(--bronze); color:white; border:none; padding:12px 25px; border-radius:6px; font-weight:800; cursor:pointer;">RETRY CONNECTION</button>
         </div>`;
     }
 }

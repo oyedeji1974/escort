@@ -64,6 +64,8 @@
             margin-top: 15px;
         }
 
+        .btn-auth:disabled { background: #ccc; cursor: not-allowed; }
+
         .footer { margin-top: 20px; font-size: 13px; text-align: center; border-top: 1px solid #eee; padding-top: 15px; }
         .toggle-btn { color: var(--deep-orange); font-weight: bold; cursor: pointer; }
     </style>
@@ -167,9 +169,10 @@
 </div>
 
 <script>
-    // const API_URL = "http://localhost:3000/api/auth";
-    const API_URL = "http://127.0.0.1:3000/api/auth";
-
+    // --- UPDATED API URL LOGIC ---
+    // We removed '/auth' from the URL because Vercel api/index.js routes usually sit at /api/signup
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const API_BASE = isLocal ? "http://localhost:3000/api" : "/api";
 
     function updateCountryDetails() {
         const countrySelect = document.getElementById('s-country');
@@ -206,6 +209,7 @@
         const email = document.getElementById('s-email').value.toLowerCase().trim();
 
         if (pass !== confirm) { alert("Passwords do not match!"); return; }
+        if (pass.length < 6) { alert("Password must be at least 6 characters!"); return; }
 
         btn.innerText = "SAVING TO CLOUD...";
         btn.disabled = true;
@@ -222,7 +226,11 @@
         };
 
         try {
-            const response = await fetch(`${API_URL}/signup`, {
+            // Updated path: if /api/signup fails, check if your backend uses /api/auth/signup
+            const fullUrl = `${API_BASE}/signup`;
+            console.log("Attempting Signup at:", fullUrl);
+
+            const response = await fetch(fullUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
@@ -237,6 +245,7 @@
                 alert(result.message || "Signup failed.");
             }
         } catch (err) {
+            console.error("Signup Error:", err);
             alert("Connection error. Is your server running?");
         } finally {
             btn.innerText = "CREATE ACCOUNT";
@@ -255,7 +264,10 @@
         btn.disabled = true;
 
         try {
-            const response = await fetch(`${API_URL}/login`, {
+            const fullUrl = `${API_BASE}/login`;
+            console.log("Attempting Login at:", fullUrl);
+
+            const response = await fetch(fullUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -265,12 +277,13 @@
 
             if (response.ok) {
                 localStorage.setItem('currentUser', JSON.stringify(result.user));
-                // Redirect based on role
+                alert("Login successful!");
                 window.location.href = result.user.role === 'admin' ? 'admin.html' : 'post-ad.html';
             } else {
                 alert(result.message || "Login failed.");
             }
         } catch (err) {
+            console.error("Login Error:", err);
             alert("Connection error.");
         } finally {
             btn.innerText = "SIGN IN";
@@ -278,6 +291,5 @@
         }
     });
 </script>
-<!-- <script src="server.js"></script> -->
 </body>
 </html>

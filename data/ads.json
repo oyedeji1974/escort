@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "1",
+    "city": "Birmingham",
+    "category": "bodyrubs",
+    "title": "Professional Massage Specialist",
+    "phone": "2055551234",
+    "whatsapp": "2055551234",
+    "telegram": "massage_pro",
+    "snapchat": "massage_pro",
+    "content": "Experienced massage therapist. Professional and discreet service.\n\n✓ Clean & Safe Environment\n✓ English Speaking\n✓ Available 24/7",
+    "price": "80",
+    "age": "26",
+    "images": ["https://via.placeholder.com/400x300?text=Massage+1"],
+    "createdAt": "2026-05-06T10:00:00Z"
+  },
+  {
+    "_id": "2",
+    "city": "Birmingham",
+    "category": "bodyrubs",
+    "title": "Relaxation & Wellness Therapy",
+    "phone": "2055555678",
+    "whatsapp": "2055555678",
+    "telegram": "wellness_spa",
+    "snapchat": "wellness_spa",
+    "content": "Therapeutic body treatments and relaxation services.\n\n✓ Licensed Therapist\n✓ Hygienic Facility\n✓ Appointments Available",
+    "price": "90",
+    "age": "28",
+    "images": ["https://via.placeholder.com/400x300?text=Wellness+1"],
+    "createdAt": "2026-05-05T15:30:00Z"
+  },
+  {
+    "_id": "3",
+    "city": "Chicago",
+    "category": "massage",
+    "title": "Swedish & Deep Tissue Massage",
+    "phone": "3125559876",
+    "whatsapp": "3125559876",
+    "telegram": "swedish_massage",
+    "snapchat": "swedish_massage",
+    "content": "Expert massage therapy for muscle tension and relaxation.\n\n✓ Professional Environment\n✓ Certified Therapist\n✓ Best Rates",
+    "price": "75",
+    "age": "30",
+    "images": ["https://via.placeholder.com/400x300?text=Swedish+1"],
+    "createdAt": "2026-05-04T12:00:00Z"
+  },
+  {
+    "_id": "4",
+    "city": "Chicago",
+    "category": "massage",
+    "title": "Full Body Massage Service",
+    "phone": "3125552468",
+    "whatsapp": "3125552468",
+    "telegram": "fullbody_massage",
+    "snapchat": "fullbody_massage",
+    "content": "Complete relaxation and therapeutic massage services.\n\n✓ Discreet & Professional\n✓ Clean Rooms\n✓ Open Late",
+    "price": "85",
+    "age": "25",
+    "images": ["https://via.placeholder.com/400x300?text=FullBody+1"],
+    "createdAt": "2026-05-03T18:45:00Z"
+  }
+]
