@@ -6,73 +6,65 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
-// --- PERMANENT CONNECTION LOGIC ---
-let cachedDb = null;
+// Global connection variable
+let isConnected = false;
 
-const connectToDatabase = async () => {
-    if (mongoose.connection.readyState >= 1) return;
-    if (cachedDb) return cachedDb;
+const connectDB = async () => {
+    if (isConnected) return;
+    
+    // Set connection options for maximum stability on Vercel
+    const options = {
+        serverSelectionTimeoutMS: 10000, // Give it 10 seconds to wake up
+        socketTimeoutMS: 45000,
+    };
 
-    // This prevents the "Buffering Timeout" error
-    mongoose.set('strictQuery', false);
-    cachedDb = await mongoose.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 5000, // Fail fast if DB is down
-    });
-    return cachedDb;
+    try {
+        await mongoose.connect(process.env.MONGO_URI, options);
+        isConnected = true;
+        console.log("MongoDB Connected Successfully");
+    } catch (err) {
+        console.error("MongoDB Connection Failed:", err.message);
+        // Don't kill the process, let the next request try again
+        isConnected = false;
+        throw err;
+    }
 };
 
-// --- MODELS ---
-const Ad = mongoose.models.Ad || mongoose.model('Ad', new mongoose.Schema({
-    title: String,
-    description: String,
-    content: String,
-    city: { type: String, lowercase: true, trim: true },
-    category: { type: String, lowercase: true, trim: true },
-    price: String,
-    age: String,
-    phone: String,
-    images: [String],
-    createdAt: { type: Date, default: Date.now }
-}));
-
-// --- GET ADS ROUTE ---
 app.get('/api/ads', async (req, res) => {
     try {
-        await connectToDatabase();
+        await connectDB();
         
         const { city, cat } = req.query;
-        let query = {};
+        let filter = {};
 
         if (city && city !== 'all' && city !== 'undefined') {
-            query.city = decodeURIComponent(city).toLowerCase().trim();
+            filter.city = decodeURIComponent(city).toLowerCase().trim();
         }
         if (cat && cat !== 'all' && cat !== 'undefined') {
-            query.category = decodeURIComponent(cat).toLowerCase().trim();
+            filter.category = decodeURIComponent(cat).toLowerCase().trim();
         }
 
-        const ads = await Ad.find(query).sort({ createdAt: -1 }).limit(100);
+        const ads = await mongoose.model('Ad').find(filter).sort({ createdAt: -1 }).limit(50);
         res.status(200).json(ads);
     } catch (err) {
-        console.error("Critical Error:", err);
-        res.status(500).send(err.message);
+        // This sends the specific error to your browser console so we can see it
+        res.status(500).json({ error: "Database Connection Error", message: err.message });
     }
 });
 
-// Auth and Post routes remain same but ensure they call await connectToDatabase();
-app.post('/api/ads', async (req, res) => {
-    try {
-        await connectToDatabase();
-        const newAd = new Ad({
-            ...req.body,
-            images: req.body.image ? [req.body.image] : []
-        });
-        await newAd.save();
-        res.status(201).json({ success: true });
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
+// Define Schema for safety
+if (!mongoose.models.Ad) {
+    mongoose.model('Ad', new mongoose.Schema({
+        title: String,
+        description: String,
+        content: String,
+        city: String,
+        category: String,
+        price: String,
+        phone: String,
+        images: [String],
+        createdAt: { type: Date, default: Date.now }
+    }));
+}
 
 module.exports = app;
