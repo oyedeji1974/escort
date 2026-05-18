@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Ad | Omnivo Global</title>
+    <title>Post Ad | Nesolist Global</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <style>
@@ -95,11 +95,10 @@
         <form id="adForm">
             <label>Category</label>
             <select id="ad-category" required>
+                <option value="regular-massage">Regular Massage</option>
                 <option value="bodyrubs">Bodyrubs</option>
-                <option value="massage">Regular Massage</option>
-                <option value="trans">Transsexual Massage</option>
-                <option value="female">Female Therapists</option>
-                <option value="strippers">Strippers</option>
+                <option value="male-massage-therapists">Male Massage Therapists</option>
+                <option value="female-massage-therapist">Female Massage Therapist</option>
             </select>
 
             <label>Ad Title</label>
@@ -147,6 +146,7 @@
     let imageArray = []; 
 
     // --- API URL LOGIC ---
+    // On Vercel, this correctly points to /api/ads
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const API_ENDPOINT = isLocal ? "http://localhost:3000/api/ads" : "/api/ads";
 
@@ -215,18 +215,20 @@
         btn.innerText = "UPLOADING...";
         btn.disabled = true;
 
+        // FIXED: adData keys now match the backend 'Ad' model exactly
         const adData = {
             city: selectedCity.toLowerCase().trim(),
             category: document.getElementById('ad-category').value,
             title: document.getElementById('ad-title').value,
-            description: document.getElementById('ad-content').value, // Matches backend 'description'
+            description: document.getElementById('ad-content').value, 
+            content: document.getElementById('ad-content').value, 
             price: document.getElementById('ad-price').value,
             age: document.getElementById('ad-age').value,
             phone: document.getElementById('ad-phone').value,
             whatsapp: document.getElementById('whatsapp').value,
             telegram: document.getElementById('telegram').value,
             snapchat: document.getElementById('snapchat').value,
-            image: imageArray[0] || "", // Matches backend 'image'
+            images: imageArray, // Changed to plural to match backend schema
             userId: user.id || null
         };
 
@@ -242,18 +244,25 @@
                 document.getElementById('success-msg').style.display = "block";
                 setTimeout(() => { window.location.href = "index.html"; }, 2000);
             } else {
-                const errData = await response.json();
-                alert("Upload failed: " + (errData.message || "Unknown error"));
+                // If Vercel sends a 404 HTML page, this will catch the syntax error gracefully
+                const text = await response.text();
+                try {
+                    const errData = JSON.parse(text);
+                    alert("Upload failed: " + (errData.message || "Server Error"));
+                } catch(jsonErr) {
+                    alert("Upload failed. The server returned an invalid response (likely a 404). Check your vercel.json routing.");
+                }
                 btn.disabled = false;
                 btn.innerText = "POST AD";
             }
         } catch (err) {
             console.error("Ad Upload Error:", err);
-            alert("Connection error.");
+            alert("Connection error. Is your internet working?");
             btn.disabled = false;
             btn.innerText = "POST AD";
         }
     };
 </script>
+<script src="/disclaimer.js" defer></script>
 </body>
 </html>

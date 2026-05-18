@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Omnivo</title>
+<meta name="description" content="Browse local classified advertisements, verified massage galleries, and independent bodyrub provider listings across top cities in the USA and Canada.">
+<title>Nesolist | Free Classified Ads</title>
 <link rel="stylesheet" href="/style.css">
 </head>
 
@@ -11,21 +12,26 @@
 
 <header class="top">
 
-<div class="logo">
-<span class="five">O</span><span class="escorts">mnivo</span>
+<div class="logo-area">
+    <div class="logo">
+        <span class="five">N</span><span class="escorts">esolist</span>
+    </div>
+    <p class="seo-subtitle">Browse local classified services in your area</p>
+    <h1 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Nesolist Free Classified Ads</h1>
 </div>
 
-<a class="post-ad-container" href="signup.html" >Post Free Ads</a>
+<a class="post-ad-container" href="signup.html">Post Free Ads</a>
 
 </header>
 
 <div class="divider"></div>
 
+<main id="main-content">
+
 <h2 class="choose">Choose a location:</h2>
 
 <div class="locations">
 
-<!-- <div class="location">United States</div> -->
 <a href="usa.html?region=usa" class="location">United States</a>
 <a href="usa.html?region=canada" class="location">Canada</a>
 <a href="usa.html?region=europe" class="location">Europe</a>
@@ -33,24 +39,62 @@
 <a href="usa.html?region=latinamerica" class="location">Mexico & Latin America</a>
 <a href="usa.html?region=oceania" class="location">Australia and Oceania</a>
 
-<a href="post-ad.html" class="floating-post-btn">
+<a href="signup.html" class="floating-post-btn" aria-label="Post a new ad listing">
     <span class="plus-icon">+</span>
     <span class="btn-text">Post Ad</span>
 </a>
 
 </div>
+
 <style>
-    .seo-section { max-width: 1200px; margin: 0 auto; padding: 20px; font-family: 'Arial', sans-serif; }
-    .country-header { color: #ff5722; border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 30px; }
-    .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 20px 0; }
-    .city-link { background: #fff; border: 1px solid #ddd; padding: 12px; text-decoration: none; color: #333; text-align: center; border-radius: 4px; font-weight: bold; transition: 0.3s; }
-    .city-link:hover { background: #000; color: #fff; border-color: #000; }
-    .cat-box { text-align: center; background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-    select { padding: 10px; width: 250px; font-size: 16px; border-radius: 5px; }
+    /* Fixed Header Positioning for Small Screens */
+    .logo-area {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .seo-subtitle {
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        color: #cccccc; /* FIXED: Increased contrast rating from #b3b3b3 to #cccccc to pass mobile contrast text metrics */
+        font-size: 0.85rem;
+        margin: 5px 0 0 2px;
+        line-height: 1.3;
+        font-weight: normal;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Make sure the header handles layout adjustments gracefully on small screens */
+    @media (max-width: 480px) {
+        header.top {
+            padding: 15px 12px;
+            gap: 10px;
+        }
+        .seo-subtitle {
+            font-size: 0.75rem;
+            max-width: 210px; /* Forces neat wrapping on small screens */
+        }
+    }
+
+    .seo-section { max-width: 1200px; margin: 0 auto; padding: 20px; font-family: 'Segoe UI', Roboto, sans-serif; }
+    .country-header { color: #ff5722; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; font-size: 1.4rem; }
+    
+    /* Premium Responsive City Grid Elements */
+    .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; padding: 20px 0; }
+    .city-link { background: #fff; border: 1px solid #e5e5e5; padding: 14px 10px; text-decoration: none; color: #333; text-align: center; border-radius: 6px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: all 0.2s ease; }
+    .city-link:hover { background: #000; color: #fff; border-color: #000; transform: translateY(-1px); }
+    
+    .cat-box { text-align: center; background: #f9f9f9; padding: 24px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #eee; }
+    .cat-box h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.1rem; color: #222; }
+    
+    /* FIXED: Created visibility styling for screen-reader hidden labels */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+    
+    select { padding: 12px; width: 100%; max-width: 280px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; background-color: #fff; color: #222; }
 </style>
 
 <div class="seo-section">
     <div class="cat-box">
+        <label for="servicePicker" class="sr-only">Select Local Category Filter:</label>
         <h3>1. What are you looking for?</h3>
         <select id="servicePicker" onchange="syncLinks()">
             <option value="regular-massage">Regular Massage</option>
@@ -109,6 +153,8 @@
     </div>
 </div>
 
+</main>
+
 <script>
     function syncLinks() {
         const cat = document.getElementById('servicePicker').value;
@@ -120,8 +166,10 @@
     } 
 </script>
 
+<script src="/disclaimer.js" defer></script>
+
 <style>
-  .omnivo-footer-teasers {
+  .nesolist-footer-teasers {
     background-color: #000000;
     color: #ffffff;
     padding: 60px 20px;
@@ -139,7 +187,8 @@
     max-width: 350px;
     border: 1px solid #333;
     padding: 20px;
-    transition: transform 0.3s ease;
+    border-radius: 6px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
   }
 
   .teaser-box:hover {
@@ -155,50 +204,48 @@
   }
 
   .teaser-box p {
-    color: #bbbbbb;
+    color: #cccccc; /* FIXED: Shifted light-grey color hex values upward to provide clean color-contrast ratios */
     font-size: 0.95rem;
     line-height: 1.6;
   }
 
-  .omnivo-btn {
+  .nesolist-btn {
     display: inline-block;
     margin-top: 15px;
     color: #ffffff;
     background: #ff5722;
-    padding: 8px 18px;
+    padding: 10px 20px;
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: bold;
-    border-radius: 2px;
+    border-radius: 4px;
+    transition: background 0.2s ease;
   }
 
-  .omnivo-btn:hover {
+  .nesolist-btn:hover {
     background: #e64a19;
   }
 </style>
 
-<section class="omnivo-footer-teasers">
+<footer class="nesolist-footer-teasers">
   <div class="teaser-box">
-    <h3>About Omnivo</h3>
-    <p>Omnivo is the premier marketplace for professional massage therapy. We connect skilled practitioners with clients seeking wellness...</p>
-    <a href="about.html" target="_blank" class="omnivo-btn">Learn More</a>
+    <h3>About Nesolist</h3>
+    <p>Nesolist is the premier marketplace for professional massage therapy. We connect skilled practitioners with clients seeking wellness...</p>
+    <a href="about.html" target="_blank" class="nesolist-btn" aria-label="Read more about our platform history and mission">Read About Us</a>
   </div>
 
   <div class="teaser-box">
     <h3>Privacy First</h3>
-    <p>Your data security is central to the Omnivo experience. We ensure a safe environment for both ad posters and visitors...</p>
-    <a href="privacy.html" target="_blank" class="omnivo-btn">View Policy</a>
+    <p>Your data security is central to the Nesolist experience. We ensure a safe environment for both ad posters and visitors...</p>
+    <a href="privacy.html" target="_blank" class="nesolist-btn" aria-label="View our data tracking and user privacy policies">View Privacy Policy</a>
   </div>
 
   <div class="teaser-box">
     <h3>Wellness Blog</h3>
     <p>From deep tissue recovery to mental clarity, explore our latest articles on how massage therapy transforms lives...</p>
-    <a href="blog.html" target="_blank" class="omnivo-btn">Read Blog</a>
+    <a href="blog.html" target="_blank" class="nesolist-btn" aria-label="Explore articles and health features inside our official wellness blog">Explore Our Blog</a>
   </div>
-</section>
-
-
+</footer>
 
 </body>
-<!-- <script src="database.js"></script> -->
 </html>
