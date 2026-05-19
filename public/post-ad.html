@@ -181,31 +181,47 @@
         nextStep(2);
     }
 
-    document.getElementById('ad-image-input').onchange = function(e) {
-        const files = Array.from(e.target.files);
-        const previewBox = document.getElementById('img-preview-box');
-        previewBox.innerHTML = "";
-        imageArray = [];
-        if (files.length > 2) { alert("Max 2 photos."); this.value = ""; return; }
-        files.forEach(file => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = event => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 600; 
-                    canvas.height = (img.height / img.width) * 600;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    const dataurl = canvas.toDataURL('image/jpeg', 0.6);
-                    imageArray.push(dataurl);
-                    previewBox.innerHTML += `<img src="${dataurl}" class="preview-img-item">`;
-                };
+document.getElementById('ad-image-input').onchange = function(e) {
+    const files = Array.from(e.target.files);
+    const previewBox = document.getElementById('img-preview-box');
+    previewBox.innerHTML = "";
+    imageArray = [];
+    
+    if (files.length > 2) { alert("Max 2 photos."); this.value = ""; return; }
+
+    files.forEach(file => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = event => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                let canvas = document.createElement('canvas');
+                let ctx = canvas.getContext('2d');
+                
+                // Keep dimensions modest to save space
+                let width = 400; 
+                let height = (img.height / img.width) * 400;
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Compression logic targeting ~50kb
+                let quality = 0.6;
+                let dataurl = canvas.toDataURL('image/jpeg', quality);
+                
+                // 70,000 characters in Base64 is approx 50kb
+                while (dataurl.length > 70000 && quality > 0.1) {
+                    quality -= 0.1;
+                    dataurl = canvas.toDataURL('image/jpeg', quality);
+                }
+
+                imageArray.push(dataurl);
+                previewBox.innerHTML += `<img src="${dataurl}" class="preview-img-item">`;
             };
-        });
-    };
+        };
+    });
+};
 
     document.getElementById('adForm').onsubmit = async function(e) {
         e.preventDefault();

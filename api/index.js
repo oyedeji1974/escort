@@ -52,7 +52,7 @@ const Ad = mongoose.models.Ad || mongoose.model('Ad', adSchema);
 
 // --- ROUTES ---
 
-// 1. GET ADS (The route for your homepage/view-ads)
+//// 1. GET ADS (The route for your homepage/view-ads)
 app.get('/api/ads', async (req, res) => {
     try {
         await connectDB();
@@ -68,22 +68,41 @@ app.get('/api/ads', async (req, res) => {
         }
 
         const ads = await Ad.find(filter).sort({ createdAt: -1 }).limit(50);
+        
+        // --- ADDED CACHE HEADERS HERE ---
+        res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
         res.status(200).json(ads);
     } catch (err) {
         res.status(500).json({ error: "Database Error", message: err.message });
     }
 });
 
-// 2. POST ADS (The route for your post-ad.html)
 app.post('/api/ads', async (req, res) => {
     try {
         await connectDB();
+        const city = req.body.city ? req.body.city.toLowerCase().trim() : 'unknown';
+
+        // --- NEW: AUTO-DELETE OLDEST AD IF LIMIT (20) IS REACHED ---
+        const count = await Ad.countDocuments({ city: city });
         
+        if (count >= 20) {
+            // Find the oldest ad in this specific city
+            const oldestAd = await Ad.findOne({ city: city })
+                .sort({ createdAt: 1 }) // 1 = Oldest first
+                .select('_id');
+
+            if (oldestAd) {
+                await Ad.findByIdAndDelete(oldestAd._id);
+                console.log(`Auto-deleted oldest ad in ${city} to maintain limit.`);
+            }
+        }
+        // --- END OF NEW LOGIC ---
+
         const newAd = new Ad({
             title: req.body.title,
             description: req.body.description,
             content: req.body.content,
-            city: req.body.city ? req.body.city.toLowerCase().trim() : 'unknown',
+            city: city,
             category: req.body.category ? req.body.category.toLowerCase().trim() : 'general',
             price: req.body.price,
             age: req.body.age,
@@ -92,7 +111,8 @@ app.post('/api/ads', async (req, res) => {
             telegram: req.body.telegram,
             snapchat: req.body.snapchat,
             images: req.body.images,
-            reports: 0
+            reports: 0,
+            createdAt: new Date() // Ensures consistent timestamp
         });
 
         const savedAd = await newAd.save();
