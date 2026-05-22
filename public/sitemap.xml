@@ -1,52 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <url>
-    <loc>https://nesolist.com/</loc>
-  </url>
+  <!-- MAIN PAGES -->
+  <url><loc>https://www.nesolist.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.nesolist.com/about.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.nesolist.com/blog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nesolist.com/canada.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nesolist.com/contact.html</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://www.nesolist.com/post-ad.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.nesolist.com/privacy.html</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.nesolist.com/signup.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.nesolist.com/usa.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nesolist.com/view-ads.html</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.nesolist.com/iyalbeji.html</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
 
-  <url>
-    <loc>https://nesolist.com/about.html</loc>
-  </url>
+  <!-- USA CITY PAGES -->
+  <url><loc>https://www.nesolist.com/usa/austin/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/new-york/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/los-angeles/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/las-vegas/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/miami/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/chicago/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/houston/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/phoenix/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/philadelphia/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/san-antonio/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/san-diego/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/dallas/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/san-jose/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/seattle/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/usa/san-francisco/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 
-  <url>
-    <loc>https://nesolist.com/blog.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/canada.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/city.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/contact.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/post-ad.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/privacy.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/signup.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/usa.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/view-ads.html</loc>
-  </url>
-
-  <url>
-    <loc>https://nesolist.com/iyalbeji.html</loc>
-  </url>
+  <!-- CANADA CITY PAGES -->
+  <url><loc>https://www.nesolist.com/canada/toronto/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/vancouver/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/montreal/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/calgary/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/ottawa/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/edmonton/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/winnipeg/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/quebec-city/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/hamilton/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/brampton/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/surrey/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/mississauga/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/halifax/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/london/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.nesolist.com/canada/markham/bodyrubs.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 
 </urlset>
