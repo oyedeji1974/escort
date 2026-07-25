@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="description" content="View premium classified listings on Nesolist." />
+  <meta property="og:site_name" content="Nesolist" />
+  <meta property="og:type" content="article" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <title>Nesolist - Premium Classified Ads</title>
+  <style>
+    :root {
+      --bg: #fffaf7;
+      --surface: #ffffff;
+      --surface-2: #fff5ef;
+      --text: #111111;
+      --text-muted: #5f5a56;
+      --border: #f3ddd2;
+      --primary: #ff5722;
+      --primary-soft: #ff7043;
+      --accent: #ff5722;
+      --accent-2: #ff7043;
+      --success: #16a34a;
+      --shadow: 0 18px 40px rgba(17, 17, 17, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --max-width: 1260px;
+      --transition: 220ms ease;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #f8fafc 0%, #f3f4f6 100%);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--primary);
+      color: white;
+      padding: 0.85rem 1rem;
+      z-index: 10000;
+      border-radius: 0 0 var(--radius-sm) 0;
+    }
+
+    .skip-link:focus { left: 0; }
+
+    .container {
+      width: min(100% - 2rem, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      background: #111111;
+      color: #ffffff;
+      border-bottom: 3px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-size: 1.05rem;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      box-shadow: 0 10px 24px rgba(255, 87, 34, 0.24);
+      font-weight: 800;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .ghost-btn, .primary-btn, .chip-btn {
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0.8rem 1.1rem;
+      font-weight: 700;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+    }
+
+    .ghost-btn {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-soft));
+      color: white;
+      box-shadow: 0 16px 35px rgba(17, 24, 39, 0.16);
+    }
+
+    .chip-btn {
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--text-muted);
+      padding: 0.55rem 0.9rem;
+    }
+
+    .ghost-btn:hover, .primary-btn:hover, .chip-btn:hover, .contact-fab:hover {
+      transform: translateY(-2px);
+    }
+
+    .ghost-btn:focus-visible, .primary-btn:focus-visible, .chip-btn:focus-visible, .contact-fab:focus-visible,
+    .thumb-btn:focus-visible, .gallery-control:focus-visible, .contact-chip:focus-visible, .related-card:focus-visible,
+    .image-card:focus-visible, .lightbox-close:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.28);
+      outline-offset: 2px;
+    }
+
+    .hero {
+      padding: 2rem 0 1.5rem;
+    }
+
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid rgba(229,231,235,0.75);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 0;
+    }
+
+    .hero-content {
+      padding: 2.2rem 2.1rem 2.1rem 2.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .title {
+      font-size: clamp(1.8rem, 2.4vw, 2.8rem);
+      line-height: 1.13;
+      letter-spacing: -0.03em;
+      margin: 0;
+      font-weight: 800;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      margin-top: 0.2rem;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.62rem 0.85rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.93rem;
+    }
+
+    .price-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-soft));
+      color: white;
+      padding: 0.95rem 1.1rem;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 1.02rem;
+      width: fit-content;
+      box-shadow: 0 16px 30px rgba(17,24,39,0.12);
+      margin-top: 0.3rem;
+    }
+
+    .hero-side {
+      background: linear-gradient(145deg, rgba(255,87,34,0.06), rgba(255,112,67,0.05));
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
+      border-left: 1px solid rgba(243, 221, 210, 0.8);
+    }
+
+    .statement-card {
+      background: rgba(255,255,255,0.84);
+      border: 1px solid rgba(229,231,235,0.75);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.2rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .statement-card h2 {
+      font-size: 1rem;
+      margin: 0 0 0.4rem;
+      letter-spacing: -0.01em;
+    }
+
+    .statement-card p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.96rem;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.35rem;
+      padding: 0 0 2.7rem;
+      align-items: start;
+    }
+
+    .main-panel, .sidebar-panel, .related-panel, .loading-panel, .error-panel {
+      background: var(--surface);
+      border: 1px solid rgba(229,231,235,0.75);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .main-panel { overflow: hidden; }
+    .sidebar-panel { padding: 1.35rem; }
+
+    .gallery-shell {
+      position: relative;
+      background: linear-gradient(135deg, #fff5ef 0%, #ffe8dc 100%);
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-main {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: linear-gradient(135deg, #ffebdf, #ffd5c3);
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(17,17,17,0.08);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(2,6,23,0.05) 0%, rgba(2,6,23,0.15) 100%);
+      pointer-events: none;
+    }
+
+    .gallery-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 1rem;
+      pointer-events: none;
+    }
+
+    .gallery-control {
+      width: 46px;
+      height: 46px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.94);
+      color: var(--primary);
+      box-shadow: 0 10px 24px rgba(15,23,42,0.16);
+      display: grid;
+      place-items: center;
+      pointer-events: auto;
+      transition: transform var(--transition), background var(--transition);
+    }
+
+    .gallery-control:hover { transform: scale(1.04); }
+
+    .gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      padding: 1rem 0 0;
+      background: transparent;
+    }
+
+    .thumb-btn {
+      border: 2px solid transparent;
+      border-radius: 16px;
+      overflow: hidden;
+      padding: 0;
+      background: transparent;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.06);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .thumb-btn.active {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      height: 88px;
+      object-fit: cover;
+    }
+
+    .ad-body {
+      padding: 1.65rem 1.7rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .section-title {
+      font-size: 1.02rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin: 0 0 0.55rem;
+    }
+
+    .section-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .section-block p, .section-block li {
+      margin: 0;
+      color: #374151;
+      font-size: 1rem;
+    }
+
+    .description-text, .content-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      color: #374151;
+      font-size: 1.02rem;
+    }
+
+    .attribute-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 0.15rem;
+    }
+
+    .attribute-card {
+      padding: 1rem 1rem 0.95rem;
+      border-radius: var(--radius-md);
+      background: linear-gradient(145deg, #f8fafc, #f3f4f6);
+      border: 1px solid var(--border);
+    }
+
+    .label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .contact-buttons-section {
+      margin: 0.15rem 0 1.25rem;
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .contact-buttons a,
+    .contact-buttons button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 130px;
+      height: 44px;
+      padding: 0 18px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      white-space: nowrap;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      color: #ffffff;
+    }
+
+    .contact-buttons a:hover,
+    .contact-buttons button:hover {
+      transform: translateY(-2px);
+      opacity: 0.92;
+    }
+
+    .contact-buttons .action-btn {
+      border: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-buttons .action-btn i {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .action-btn i {
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(15,23,42,0.08);
+      border-color: #ffc8b0;
+    }
+
+    .action-btn--whatsapp {
+      background: #25D366;
+      color: #ffffff;
+    }
+
+    .action-btn--telegram {
+      background: #229ED9;
+      color: #ffffff;
+    }
+
+    .action-btn--snapchat {
+      background: #FFFC00;
+      color: #111111;
+    }
+
+    .action-btn--phone {
+      background: #6C63FF;
+      color: #ffffff;
+    }
+
+    .action-btn--sms {
+      background: #4A90E2;
+      color: #ffffff;
+    }
+
+    .action-btn--report {
+      background: #F44336;
+      color: #ffffff;
+    }
+
+    .sidebar-panel > .section-title { margin-bottom: 0.75rem; }
+
+    .sidebar-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-actions .ghost-btn, .sidebar-actions .primary-btn {
+      justify-content: flex-start;
+    }
+
+    .summary-card {
+      background: linear-gradient(145deg, rgba(255,87,34,0.07), rgba(255,112,67,0.04));
+      border: 1px solid rgba(243, 221, 210, 0.8);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1rem 1.05rem;
+      margin-top: 1rem;
+    }
+
+    .summary-card h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .summary-card p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .related-panel {
+      padding: 1.5rem 1.4rem 1.7rem;
+      margin-top: 0.2rem;
+    }
+
+    .related-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .related-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: 0 10px 24px rgba(15,23,42,0.05);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .related-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(15,23,42,0.08);
+    }
+
+    .related-image {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: linear-gradient(135deg, #f8fafc, #e5e7eb);
+      width: 100%;
+    }
+
+    .related-body {
+      padding: 0.95rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      flex: 1;
+    }
+
+    .related-title {
+      font-weight: 800;
+      font-size: 1rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      overflow: hidden;
+    }
+
+    .related-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: auto;
+    }
+
+    .related-price {
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .loading-panel, .error-panel {
+      padding: 4rem 2.5rem;
+      text-align: center;
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      background: var(--surface);
+      margin: 1rem 0 2rem;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1.2rem;
+      border-radius: 50%;
+      border: 4px solid rgba(37,99,235,0.15);
+      border-top-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-panel h2, .error-panel h2 {
+      margin: 0 0 0.55rem;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    .loading-panel p, .error-panel p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .contact-fab {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 300;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border: 0;
+      box-shadow: 0 16px 36px rgba(37,99,235,0.24);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 1000;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-inner {
+      position: relative;
+      width: min(92vw, 1100px);
+      max-height: 92vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox img {
+      width: 100%;
+      height: auto;
+      max-height: 92vh;
+      object-fit: contain;
+      border-radius: 24px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.28);
+      background: #111827;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.85rem;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 20px rgba(15,23,42,0.16);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      pointer-events: none;
+    }
+
+    .lightbox-nav button {
+      pointer-events: auto;
+      width: 46px;
+      height: 46px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 10px 24px rgba(15,23,42,0.2);
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-side {
+        border-left: 0;
+        border-top: 1px solid rgba(229,231,235,0.75);
+      }
+
+      .related-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container { width: min(100% - 1rem, var(--max-width)); }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-content { padding: 1.1rem; }
+      .hero-side { padding: 1rem; border-left: 0; border-top: 1px solid rgba(243, 221, 210, 0.8); }
+      .title { font-size: clamp(1.35rem, 5.4vw, 1.9rem); }
+      .attribute-grid { grid-template-columns: 1fr; }
+      .related-grid { grid-template-columns: 1fr; }
+      .contact-fab { display: inline-flex; }
+      .topbar-inner { min-height: 64px; }
+      .top-actions { gap: 0.55rem; width: auto; margin-left: auto; }
+      .top-actions .ghost-btn, .top-actions .primary-btn { width: auto; justify-content: center; padding: 0.65rem 0.9rem; font-size: 0.95rem; }
+      .contact-buttons { gap: 8px; }
+      .contact-buttons a,
+      .contact-buttons button { width: calc(50% - 4px); min-width: 0; }
+      .gallery-thumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ad-body, .sidebar-panel, .related-panel { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="/" aria-label="Nesolist home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>Nesolist</span>
+      </a>
+      <div class="top-actions">
+        <a class="primary-btn" href="/post-ad.html">Post an Ad</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="container" id="status-area" aria-live="polite">
+      <section class="loading-panel" id="loading-panel" aria-labelledby="loading-title">
+        <div>
+          <div class="spinner" aria-hidden="true"></div>
+          <h2 id="loading-title">Loading advertisement...</h2>
+          <p>Please wait while we retrieve the latest listing details.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" type="button" id="lightbox-close" aria-label="Close image preview">×</button>
+      <div class="lightbox-nav">
+        <button type="button" id="lightbox-prev" aria-label="Previous image">←</button>
+        <button type="button" id="lightbox-next" aria-label="Next image">→</button>
+      </div>
+      <img id="lightbox-image" src="" alt="" />
+    </div>
+  </div>
+
+  <button class="contact-fab" id="mobile-contact-btn" type="button" aria-label="Open contact options">☎</button>
+
+  <script>
+    const state = {
+      ad: null,
+      images: [],
+      activeImageIndex: 0,
+      relatedAds: []
+    };
+
+    let id =
+new URLSearchParams(location.search).get("id");
+
+if(!id){
+
+const slug =
+window.location.pathname.split("/").pop();
+
+id =
+slug.split("-").pop();
+
+}
+    const statusArea = document.getElementById('status-area');
+    const loadingPanel = document.getElementById('loading-panel');
+    const mobileContactBtn = document.getElementById('mobile-contact-btn');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '<')
+        .replace(/>/g, '>')
+        .replace(/\"/g, '"')
+        .replace(/'/g, '&#39;');
+    }
+
+    function slugify(value) {
+      return String(value || '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    }
+
+    function formatDate(value) {
+      if (!value) return 'Recently posted';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return 'Recently posted';
+      return new Intl.DateTimeFormat('en', {
+        month: 'long',
+        day: 'numeric'
+      }).format(date);
+    }
+
+    function createElement(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined && text !== null) el.textContent = text;
+      return el;
+    }
+
+    function setMetaTag(name, content, attr = 'name') {
+      let meta = document.querySelector(`meta[${attr}="${name}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute(attr, name);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    }
+
+    function updateSeo(ad) {
+      const title = `${ad.title || 'Premium Listing'} | Nesolist`;
+      const description = (ad.description || ad.content || 'Find premium classifieds and local listings on Nesolist.').slice(0, 155);
+      const image = ad.images && ad.images[0] ? ad.images[0] : '';
+      const canonicalUrl = new URL(window.location.href);
+      const path = `${window.location.pathname}${window.location.search}`;
+      const canonical = new URL(path, window.location.origin).toString();
+
+      document.title = title;
+      setMetaTag('description', description);
+      setMetaTag('og:title', title, 'property');
+      setMetaTag('og:description', description, 'property');
+      setMetaTag('og:url', canonical, 'property');
+      setMetaTag('og:type', 'article', 'property');
+      setMetaTag('og:image', image, 'property');
+      setMetaTag('twitter:title', title, 'name');
+      setMetaTag('twitter:description', description, 'name');
+      setMetaTag('twitter:image', image, 'name');
+      const canonicalLink = document.querySelector('link[rel="canonical"]');
+      if (canonicalLink) canonicalLink.setAttribute('href', canonical);
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: ad.title,
+        headline: ad.title,
+        description: ad.description || ad.content || '',
+        image: ad.images || [],
+        datePosted: ad.createdAt,
+        offers: {
+          '@type': 'Offer',
+          price: ad.price || '',
+          priceCurrency: 'USD'
+        },
+        location: {
+          '@type': 'Place',
+          name: ad.city || ''
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Nesolist'
+        }
+      };
+      let scriptTag = document.querySelector('script[type="application/ld+json"]');
+      if (!scriptTag) {
+        scriptTag = document.createElement('script');
+        scriptTag.type = 'application/ld+json';
+        document.head.appendChild(scriptTag);
+      }
+      scriptTag.textContent = JSON.stringify(schema);
+    }
+
+    function showLoading() {
+      statusArea.innerHTML = '';
+      statusArea.appendChild(loadingPanel);
+      loadingPanel.style.display = 'grid';
+    }
+
+    function showError(message) {
+      const panel = createElement('section', 'error-panel');
+      const title = createElement('h2', '', 'Advertisement not found');
+      const text = createElement('p', '', message || 'The listing you requested may have been removed or is unavailable.');
+      const actions = createElement('div', 'top-actions');
+      actions.style.marginTop = '1rem';
+      actions.style.justifyContent = 'center';
+      const backBtn = createElement('button', 'primary-btn', 'Back');
+      backBtn.type = 'button';
+      backBtn.addEventListener('click', () => history.back());
+      actions.appendChild(backBtn);
+      panel.appendChild(title);
+      panel.appendChild(text);
+      panel.appendChild(actions);
+      statusArea.innerHTML = '';
+      statusArea.appendChild(panel);
+    }
+
+    function renderTextBlock(selector, text) {
+      const block = document.querySelector(selector);
+      if (!block) return;
+      block.innerHTML = '';
+      if (!text) {
+        const p = createElement('p', 'description-text', 'No additional details available.');
+        block.appendChild(p);
+        return;
+      }
+      const parts = String(text).split(/\n{2,}|\r\n{2,}/).filter(Boolean);
+      if (parts.length === 0) {
+        const p = createElement('p', 'description-text', text);
+        block.appendChild(p);
+        return;
+      }
+      parts.forEach((part) => {
+        const p = createElement('p', 'description-text', part.trim());
+        block.appendChild(p);
+      });
+    }
+
+    function renderContactButtons(ad, container = null) {
+      const target = container || document.getElementById('contact-list');
+      if (!target) return;
+
+      target.innerHTML = '';
+
+      const addButton = (label, variant, href, value, isExternal = true) => {
+        const button = createElement(isExternal ? 'a' : 'button', `action-btn action-btn--${variant}`);
+        if (isExternal) {
+          button.href = href;
+          button.target = '_blank';
+          button.rel = 'noopener noreferrer';
+        }
+        button.setAttribute('aria-label', `${label}: ${value}`);
+        const icon = document.createElement('i');
+        icon.setAttribute('aria-hidden', 'true');
+        icon.className = variant === 'whatsapp' ? 'fa-brands fa-whatsapp' : variant === 'telegram' ? 'fa-brands fa-telegram' : variant === 'snapchat' ? 'fa-brands fa-snapchat' : variant === 'sms' ? 'fa-solid fa-comment-dots' : variant === 'report' ? 'fa-solid fa-flag' : 'fa-solid fa-phone';
+        button.appendChild(icon);
+        const text = document.createElement('span');
+        text.textContent = label;
+        button.appendChild(text);
+        target.appendChild(button);
+        return button;
+      };
+
+      if (ad.phone) {
+        addButton('Phone', 'phone', `tel:${ad.phone}`, ad.phone, false);
+      }
+
+      const whatsappValue = ad.whatsapp || ad.phone;
+      if (whatsappValue) {
+        addButton('WhatsApp', 'whatsapp', `https://wa.me/${String(whatsappValue).replace(/[^0-9+]/g, '')}`, whatsappValue);
+      }
+
+      if (ad.telegram) {
+        addButton('Telegram', 'telegram', `https://t.me/${String(ad.telegram).replace(/@/g, '')}`, ad.telegram);
+      }
+
+      if (ad.snapchat) {
+        addButton('Snapchat', 'snapchat', `https://www.snapchat.com/add/${String(ad.snapchat).replace(/@/g, '')}`, ad.snapchat);
+      }
+
+      if (ad.phone) {
+        addButton('SMS', 'sms', `sms:${ad.phone}`, ad.phone, false);
+      }
+    }
+
+    function openLightbox(index) {
+      if (!state.images.length) return;
+      state.activeImageIndex = index;
+      lightboxImage.src = state.images[index];
+      lightboxImage.alt = `${state.ad.title || 'Listing image'} ${index + 1}`;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function renderGallery(images) {
+      const galleryShell = document.getElementById('gallery-shell');
+      if (!galleryShell) return;
+      galleryShell.innerHTML = '';
+      state.images = images.length ? images : [createPlaceholderImage()];
+      state.images = state.images.map((img) => resolveImageSource(img));
+    if (state.images.length === 1) {
+        const main = new Image();
+        main.className = 'gallery-main';
+        main.src = state.images[0];
+        main.alt = state.ad.title || 'Listing image';
+        main.loading = 'eager';
+        main.decoding = 'async';
+        main.addEventListener('click', () => openLightbox(0));
+        galleryShell.appendChild(main);
+        const overlay = createElement('div', 'gallery-overlay');
+        galleryShell.appendChild(overlay);
+        return;
+      }
+
+      const main = new Image();
+      main.className = 'gallery-main';
+      main.src = state.images[0];
+      main.alt = `${state.ad.title || 'Listing image'} preview`;
+      main.loading = 'lazy';
+      main.decoding = 'async';
+      main.addEventListener('click', () => openLightbox(state.activeImageIndex));
+      galleryShell.appendChild(main);
+      const overlay = createElement('div', 'gallery-overlay');
+      galleryShell.appendChild(overlay);
+      const controls = createElement('div', 'gallery-controls');
+      const prev = createElement('button', 'gallery-control', '←');
+      prev.type = 'button';
+      prev.setAttribute('aria-label', 'Previous image');
+      prev.addEventListener('click', () => changeImage(-1));
+      const next = createElement('button', 'gallery-control', '→');
+      next.type = 'button';
+      next.setAttribute('aria-label', 'Next image');
+      next.addEventListener('click', () => changeImage(1));
+      controls.appendChild(prev);
+      controls.appendChild(next);
+      galleryShell.appendChild(controls);
+      const thumbs = createElement('div', 'gallery-thumbs');
+      state.images.forEach((imgSrc, index) => {
+        const btn = createElement('button', 'thumb-btn');
+        btn.type = 'button';
+        btn.setAttribute('aria-label', `Show image ${index + 1}`);
+        btn.classList.toggle('active', index === state.activeImageIndex);
+        const thumbImg = new Image();
+        thumbImg.onerror = () => {
+    thumbImg.src = createPlaceholderImage();
+};
+        thumbImg.src = imgSrc;
+        thumbImg.alt = `${state.ad.title || 'Listing image'} thumbnail ${index + 1}`;
+        thumbImg.loading = 'lazy';
+        thumbImg.decoding = 'async';
+        thumbImg.addEventListener('click', () => showImage(index));
+        btn.appendChild(thumbImg);
+        btn.addEventListener('click', () => showImage(index));
+        thumbs.appendChild(btn);
+      });
+      galleryShell.appendChild(thumbs);
+      updateMainImage();
+      bindSwipe();
+    }
+
+    function updateMainImage() {
+      const main = document.querySelector('#gallery-shell .gallery-main');
+      if (!main) return;
+      main.src = state.images[state.activeImageIndex];
+      main.alt = `${state.ad.title || 'Listing image'} ${state.activeImageIndex + 1}`;
+      document.querySelectorAll('#gallery-shell .thumb-btn').forEach((btn, index) => btn.classList.toggle('active', index === state.activeImageIndex));
+    }
+
+    function showImage(index) {
+      state.activeImageIndex = (index + state.images.length) % state.images.length;
+      updateMainImage();
+    }
+
+    function changeImage(direction) {
+      showImage(state.activeImageIndex + direction);
+    }
+
+    function bindSwipe() {
+      const galleryShell = document.getElementById('gallery-shell');
+      if (!galleryShell) return;
+      let startX = 0;
+      let distX = 0;
+      galleryShell.addEventListener('touchstart', (event) => {
+        startX = event.touches[0].clientX;
+      }, { passive: true });
+      galleryShell.addEventListener('touchend', (event) => {
+        distX = event.changedTouches[0].clientX - startX;
+        if (Math.abs(distX) > 55) {
+          changeImage(distX < 0 ? 1 : -1);
+        }
+      }, { passive: true });
+    }
+
+    function createPlaceholderImage() {
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'><rect width='1200' height='800' fill='#e5e7eb'/><rect x='90' y='90' width='1020' height='620' rx='28' fill='white' stroke='#cbd5e1' stroke-width='2'/><circle cx='420' cy='350' r='120' fill='#dbeafe'/><rect x='620' y='260' width='260' height='30' rx='15' fill='#94a3b8'/><rect x='620' y='320' width='180' height='24' rx='12' fill='#cbd5e1'/><rect x='620' y='368' width='320' height='24' rx='12' fill='#cbd5e1'/><rect x='620' y='420' width='220' height='24' rx='12' fill='#cbd5e1'/></svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    function resolveImageSource(src) {
+      if (typeof src !== 'string' || !src.trim()) return createPlaceholderImage();
+      const normalized = src.trim();
+      if (normalized.startsWith('data:image')) return normalized;
+      return normalized;
+    }
+
+    function renderAd(ad) {
+      state.ad = ad;
+      state.images = Array.isArray(ad.images) && ad.images.length ? ad.images : [createPlaceholderImage()];
+      updateSeo(ad);
+      statusArea.innerHTML = '';
+      const hero = document.createElement('section');
+      hero.className = 'hero-card';
+      const heroGrid = document.createElement('div');
+      heroGrid.className = 'hero-grid';
+      const heroContent = document.createElement('div');
+      heroContent.className = 'hero-content';
+
+      const breadcrumb = document.createElement('nav');
+      breadcrumb.className = 'breadcrumb';
+      breadcrumb.setAttribute('aria-label', 'Breadcrumb');
+      const homeLink = document.createElement('a');
+      homeLink.href = '/';
+      homeLink.textContent = 'Home';
+      const separator1 = document.createTextNode(' › ');
+      const categoryLink = document.createElement('a');
+      categoryLink.href = `/view-ads.html?city=${encodeURIComponent(ad.city || '')}&cat=${encodeURIComponent(ad.category || '')}`;
+      categoryLink.textContent = (ad.category || 'Listing').replace(/\b\w/g, (m) => m.toUpperCase());
+      const separator2 = document.createTextNode(' › ');
+      const cityLink = document.createElement('a');
+      cityLink.href = `/view-ads.html?city=${encodeURIComponent(ad.city || '')}`;
+      cityLink.textContent = ad.city ? ad.city.replace(/\b\w/g, (m) => m.toUpperCase()) : 'Location';
+      const separator3 = document.createTextNode(' › ');
+      const current = document.createElement('span');
+      current.textContent = ad.title || 'Listing';
+      breadcrumb.appendChild(homeLink);
+      breadcrumb.appendChild(separator1);
+      breadcrumb.appendChild(categoryLink);
+      breadcrumb.appendChild(separator2);
+      breadcrumb.appendChild(cityLink);
+      breadcrumb.appendChild(separator3);
+      breadcrumb.appendChild(current);
+      heroContent.appendChild(breadcrumb);
+
+      const title = createElement('h1', 'title', ad.title || 'Premium Listing');
+      heroContent.appendChild(title);
+
+      const heroSide = document.createElement('div');
+      heroSide.className = 'hero-side';
+      const summaryCard = document.createElement('div');
+      summaryCard.className = 'summary-card';
+      const summaryTitle = createElement('h3', '', 'Posted on');
+      const summaryTextValue = createElement('p', '', formatDate(ad.createdAt));
+      summaryCard.appendChild(summaryTitle);
+      summaryCard.appendChild(summaryTextValue);
+      heroSide.appendChild(summaryCard);
+      heroGrid.appendChild(heroContent);
+      heroGrid.appendChild(heroSide);
+      hero.appendChild(heroGrid);
+      statusArea.appendChild(hero);
+
+      const mainGrid = document.createElement('div');
+      mainGrid.className = 'main-grid';
+      const mainPanel = document.createElement('section');
+      mainPanel.className = 'main-panel';
+      const galleryShell = document.createElement('div');
+      galleryShell.id = 'gallery-shell';
+      galleryShell.className = 'gallery-shell';
+      mainPanel.appendChild(galleryShell);
+      const adBody = document.createElement('div');
+      adBody.className = 'ad-body';
+      const hasDescription = Boolean(ad.description && String(ad.description).trim());
+      const hasContent = Boolean(ad.content && String(ad.content).trim() && String(ad.content).trim() !== String(ad.description || '').trim());
+
+      if (hasDescription) {
+        const descriptionTitle = createElement('h2', 'section-title', 'Description');
+        const descriptionBlock = document.createElement('div');
+        descriptionBlock.id = 'description-block';
+        descriptionBlock.className = 'section-block';
+        descriptionBlock.appendChild(descriptionTitle);
+        const descriptionText = createElement('p', 'description-text', ad.description || '');
+        descriptionBlock.appendChild(descriptionText);
+        adBody.appendChild(descriptionBlock);
+      }
+
+      if (hasContent) {
+        const contentTitle = createElement('h2', 'section-title', 'Details');
+        const contentBlock = document.createElement('div');
+        contentBlock.id = 'content-block';
+        contentBlock.className = 'section-block';
+        contentBlock.appendChild(contentTitle);
+        const contentText = createElement('div', 'content-text');
+        contentText.textContent = ad.content;
+        contentBlock.appendChild(contentText);
+        adBody.appendChild(contentBlock);
+      }
+
+      const contactSection = document.createElement('div');
+      contactSection.className = 'contact-buttons-section';
+      const contactTitle = createElement('h2', 'section-title', 'Contact');
+      const contactList = document.createElement('div');
+      contactList.id = 'contact-list';
+      contactList.className = 'contact-buttons';
+      contactSection.appendChild(contactTitle);
+      contactSection.appendChild(contactList);
+      adBody.appendChild(contactSection);
+      renderContactButtons(ad, contactList);
+
+      const attrGrid = document.createElement('div');
+      attrGrid.className = 'attribute-grid';
+      const attrs = [
+        ['Category', ad.category || 'General'],
+        ['City', ad.city || 'Unknown'],
+        ['Age', ad.age || 'New'],
+        ['Price', ad.price || 'Available on request']
+      ];
+      attrs.forEach(([label, value]) => {
+        const card = document.createElement('div');
+        card.className = 'attribute-card';
+        const labelEl = createElement('span', 'label', label);
+        const valueEl = createElement('span', 'value', value);
+        card.appendChild(labelEl);
+        card.appendChild(valueEl);
+        attrGrid.appendChild(card);
+      });
+      adBody.appendChild(attrGrid);
+      mainPanel.appendChild(adBody);
+      mainGrid.appendChild(mainPanel);
+
+      const sidebar = document.createElement('aside');
+      sidebar.className = 'sidebar-panel';
+      mainGrid.appendChild(sidebar);
+      statusArea.appendChild(mainGrid);
+
+      const related = document.createElement('section');
+      related.className = 'related-panel';
+      const relatedHdr = document.createElement('div');
+      relatedHdr.className = 'related-hdr';
+      const relatedTitle = createElement('h2', 'section-title', 'Related Ads');
+      const relatedLink = createElement('a', 'chip-btn', 'View more');
+      relatedLink.href = `/view-ads.html?city=${encodeURIComponent(ad.city || '')}&cat=${encodeURIComponent(ad.category || '')}`;
+      relatedHdr.appendChild(relatedTitle);
+      relatedHdr.appendChild(relatedLink);
+      related.appendChild(relatedHdr);
+      const relatedGrid = document.createElement('div');
+      relatedGrid.className = 'related-grid';
+      relatedGrid.id = 'related-grid';
+      related.appendChild(relatedGrid);
+      statusArea.appendChild(related);
+      renderGallery(state.images);
+      renderRelatedAds(ad);
+      bindLightboxEvents();
+    }
+
+   async function fetchJson(url, options = {}) {
+    const isLocal =
+        location.hostname === "localhost" ||
+        location.hostname === "127.0.0.1";
+
+    const baseUrl = isLocal ? "http://localhost:3000" : "";
+
+    const response = await fetch(baseUrl + url, {
+        headers: {
+            Accept: "application/json"
+        },
+        ...options
+    });
+
+    if (!response.ok) {
+        throw new Error("Request failed");
+    }
+
+    return response.json();
+}
+
+    async function loadAd() {
+      showLoading();
+      if (!id) {
+        showError('No advertisement identifier found in the URL.');
+        return;
+      }
+      try {
+        const ad = await fetchJson(`/api/ads/${id}`);
+        if (!ad || ad.error) {
+          showError('The requested advertisement could not be loaded.');
+          return;
+        }
+        renderAd(ad);
+        await loadRelatedAds(ad);
+      } catch (error) {
+        showError('The listing could not be loaded right now. Please try again shortly.');
+      }
+    }
+
+    async function loadRelatedAds(ad) {
+      if (!ad.city || !ad.category) return;
+      try {
+        const data = await fetchJson(`/api/ads?city=${encodeURIComponent(ad.city)}&cat=${encodeURIComponent(ad.category)}`);
+        const filtered = Array.isArray(data) ? data.filter((item) => String(item._id) !== String(ad._id)) : [];
+        state.relatedAds = filtered.slice(0, 6);
+        renderRelatedAds(ad);
+      } catch (error) {
+        state.relatedAds = [];
+        renderRelatedAds(ad);
+      }
+    }
+
+    function renderRelatedAds(ad) {
+      const grid = document.getElementById('related-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      if (!state.relatedAds.length) {
+        const empty = createElement('p', '', 'No related listings are available for this city and category right now.');
+        grid.appendChild(empty);
+        return;
+      }
+      state.relatedAds.forEach((item) => {
+        const card = document.createElement('article');
+        card.className = 'related-card';
+        const link = document.createElement('a');
+        link.href = `/ad.html?id=${item._id}`;
+        link.setAttribute('aria-label', `Open ${item.title}`);
+        const image = new Image();
+        image.className = 'related-image';
+        const firstImage = Array.isArray(item.images) && item.images.length
+          ? item.images[0]
+          : (item.image || item.imageUrl || '');
+        const resolvedImage = resolveImageSource(firstImage);
+        image.src = resolvedImage;
+        image.dataset.source = resolvedImage;
+        image.alt = item.title || 'Related listing';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        const body = document.createElement('div');
+        body.className = 'related-body';
+        const title = createElement('div', 'related-title', item.title || 'Untitled listing');
+        const meta = document.createElement('div');
+        meta.className = 'related-meta';
+        const city = createElement('span', '', item.city || 'Unknown');
+        const price = createElement('span', 'related-price', item.price || 'Contact');
+        meta.appendChild(city);
+        meta.appendChild(price);
+        body.appendChild(title);
+        body.appendChild(meta);
+        link.appendChild(image);
+        link.appendChild(body);
+        card.appendChild(link);
+        grid.appendChild(card);
+      });
+    }
+
+    async function copyCurrentLink(event) {
+      const link = window.location.href;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(link);
+        } else {
+          const input = document.createElement('input');
+          input.value = link;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand('copy');
+          document.body.removeChild(input);
+        }
+        const currentTarget = event && event.currentTarget ? event.currentTarget : null;
+        if (currentTarget) {
+          const old = currentTarget.textContent;
+          currentTarget.textContent = 'Link copied';
+          setTimeout(() => { currentTarget.textContent = old; }, 1400);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    async function shareCurrentLink() {
+      const data = {
+        title: document.title,
+        text: state.ad ? state.ad.title : 'Check out this listing on Nesolist.',
+        url: window.location.href
+      };
+      try {
+        if (navigator.share) {
+          await navigator.share(data);
+        } else {
+          await copyCurrentLink();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function bindLightboxEvents() {
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', () => changeImage(-1));
+      lightboxNext.addEventListener('click', () => changeImage(1));
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (!lightbox.classList.contains('open')) return;
+        if (event.key === 'Escape') closeLightbox();
+        if (event.key === 'ArrowRight') changeImage(1);
+        if (event.key === 'ArrowLeft') changeImage(-1);
+      });
+      mobileContactBtn.addEventListener('click', () => {
+        document.getElementById('contact-list')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', loadAd);
+  </script>
+</body>
+</html>
+

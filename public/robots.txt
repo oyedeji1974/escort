@@ -1,3 +1,4 @@
-user-agent:*
+User-agent: *
 Allow: /
-sitemap: https://nesolist.com/sitemap.xml
+
+Sitemap: https://www.nesolist.com/sitemap.xml
